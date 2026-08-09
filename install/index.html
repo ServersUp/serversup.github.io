@@ -370,7 +370,7 @@
         <li>Live status board on the homepage - no bot required to check UP/DOWN</li>
       </ul>
 
-      <h2 id="install">How To Install And Set Up</h2>
+      <h2 id="install">How To Set Up The Discord Bot</h2>
       <ol class="install-steps">
         <li>Add the bot to your server with the <strong>Add Discord bot</strong> button above.</li>
         <li>
@@ -643,6 +643,35 @@
             You need Manage Channels or Administrator in the Discord server to run
             <code>/subscribe</code> and <code>/unsubscribe</code>. Anyone in the channel can still see the alerts
             once a subscription exists.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>How is a webhook subscription different from the bot?</summary>
+          <p>
+            The bot posts alerts with the bot's name and needs permissions in your server. A webhook posts under its
+            own name, needs no bot and no permissions, and cannot run any commands. Both deliver the same alerts on
+            status changes; they are just two ways to receive them.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Why does the form send a test alert?</summary>
+          <p>
+            Before saving, ServersUp posts one test alert to your webhook. That confirms the URL works, proves you
+            control the channel it points to, and avoids subscribing a stale or broken webhook.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I subscribe to the same server on both bot and webhook?</summary>
+          <p>
+            Yes. Bot subscriptions and webhook subscriptions are separate, so you can have alerts in multiple channels
+            or use both methods at once. Each webhook can only subscribe to a given server once.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>What if I delete the webhook after subscribing?</summary>
+          <p>
+            Alerts to a deleted webhook fail silently; ServersUp stops retrying them and no longer tries to deliver to
+            that webhook. Delete the subscription or create the webhook again if you want alerts back.
           </p>
         </details>
       </section>
