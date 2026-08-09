@@ -217,6 +217,7 @@ code {
   align-items: center;
   justify-content: center;
   padding: 0.55rem 1.1rem;
+  min-height: 40px;
   border: none;
   border-radius: 6px;
   background: var(--discord);
@@ -237,6 +238,7 @@ code {
 
 .btn-discord--sm {
   padding: 0.4rem 0.8rem;
+  min-height: auto;
   font-size: 0.85rem;
 }
 
@@ -245,6 +247,7 @@ code {
   align-items: center;
   justify-content: center;
   padding: 0.55rem 1.1rem;
+  min-height: 40px;
   border: none;
   border-radius: 6px;
   background: var(--cta);
@@ -262,6 +265,18 @@ code {
   background: var(--cta-hover);
   color: #fff;
   text-decoration: none;
+}
+
+.btn-cta--ghost {
+  background: transparent;
+  color: var(--link);
+  border: 1px solid var(--border-strong);
+}
+
+.btn-cta--ghost:hover {
+  background: var(--bg-soft);
+  color: var(--link-hover);
+  border-color: var(--accent);
 }
 
 .btn-cta--sm {
@@ -931,6 +946,50 @@ noscript .status-seo-fallback {
 
 .doc li {
   margin: 0.35rem 0;
+}
+
+.doc .install-steps {
+  list-style: none;
+  counter-reset: install-steps;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.doc .install-steps li {
+  counter-increment: install-steps;
+  position: relative;
+  margin: 0;
+  padding: 0.55rem 0.85rem 0.55rem 2.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg-elevated);
+  color: var(--text-reading);
+  line-height: 1.5;
+}
+
+.doc .install-steps li::before {
+  content: counter(install-steps);
+  position: absolute;
+  left: 0.85rem;
+  top: 0.62rem;
+  width: 1.45rem;
+  height: 1.45rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+  color: var(--link);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.doc .install-steps code {
+  color: var(--link);
 }
 
 /* -- Blog index -- */
