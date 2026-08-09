@@ -890,6 +890,15 @@ noscript .status-seo-fallback {
   padding: 2rem 1.25rem 3rem;
 }
 
+.doc h1 {
+  margin: 0 0 0.5rem;
+  font-size: clamp(1.9rem, 4vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.12;
+  color: var(--text);
+}
+
 .doc h2 {
   margin: 2.5rem 0 0.85rem;
   font-size: 1.35rem;
