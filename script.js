@@ -254,7 +254,7 @@ function setupHelpPops(root) {
 async function setupWebhookForm() {
   const openButtons = document.querySelectorAll("[data-webhook-open]");
   const panel = document.getElementById("webhook-form");
-  if (openButtons.length === 0 || !(panel instanceof HTMLElement)) return;
+  if (openButtons.length === 0 || !(panel instanceof HTMLDialogElement)) return;
 
   const form = panel.querySelector("[data-webhook-form]");
   const statusEl = panel.querySelector("[data-webhook-status]");
@@ -429,29 +429,34 @@ async function setupWebhookForm() {
 
   setupHelpPops(panel);
 
-  for (const btn of openButtons) {
-    if (!(btn instanceof HTMLButtonElement)) continue;
-    btn.addEventListener("click", () => {
-      const next = panel.hidden;
-      panel.hidden = !next;
-      for (const b of openButtons) {
-        if (b instanceof HTMLButtonElement) b.setAttribute("aria-expanded", next ? "true" : "false");
-      }
-      if (next) {
-        window.scrollTo({ top: panel.getBoundingClientRect().top + window.scrollY - 16, behavior: "smooth" });
-        const first = panel.querySelector("#webhook-url");
-        if (first instanceof HTMLInputElement) first.focus();
-      }
-    });
+  function openModal() {
+    if (!(panel instanceof HTMLDialogElement)) return;
+    if (!panel.open) panel.showModal();
   }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !panel.hidden) {
-      panel.hidden = true;
-      for (const b of openButtons) {
-        if (b instanceof HTMLButtonElement) b.setAttribute("aria-expanded", "false");
-      }
-    }
+  function closeModal() {
+    if (panel instanceof HTMLDialogElement && panel.open) panel.close();
+  }
+
+  for (const btn of openButtons) {
+    if (!(btn instanceof HTMLButtonElement)) continue;
+    btn.addEventListener("click", openModal);
+  }
+
+  const closeBtn = panel.querySelector("[data-webhook-close]");
+  if (closeBtn instanceof HTMLButtonElement) {
+    closeBtn.addEventListener("click", closeModal);
+  }
+
+  panel.addEventListener("click", (e) => {
+    if (!(e.target instanceof Node)) return;
+    if (e.target === panel) closeModal();
+  });
+
+  panel.addEventListener("close", () => {
+    if (form instanceof HTMLFormElement) form.reset();
+    setSelected("");
+    setStatus("");
   });
 
   form.addEventListener("submit", async (e) => {
