@@ -255,7 +255,97 @@
           >
             Add to Discord
           </a>
+          <button
+            type="button"
+            class="btn-cta"
+            data-webhook-open
+            aria-expanded="false"
+            aria-controls="webhook-form"
+          >
+            Add webhook instead
+          </button>
         </p>
+        <p class="hero-proof">Prefer a webhook? No bot, no permissions needed, no signup.</p>
+      </section>
+
+      <section class="webhook-form-panel" id="webhook-form" aria-labelledby="webhook-heading" hidden>
+        <h2 id="webhook-heading">Add a webhook subscription</h2>
+        <p class="muted">
+          Get alerts in any channel without adding the bot. Create a webhook in that channel, paste it below, pick a
+          server, and we will post a test alert to confirm it works before saving.
+        </p>
+
+        <form class="webhook-form" data-webhook-form novalidate>
+          <div class="webhook-form__field">
+            <label class="webhook-form__label" for="webhook-url">Discord webhook URL</label>
+            <input
+              id="webhook-url"
+              class="webhook-form__input"
+              type="url"
+              name="webhookUrl"
+              placeholder="https://discord.com/api/webhooks/0000/xxxx"
+              autocomplete="off"
+              required
+            />
+            <button type="button" class="help-pop" data-help="webhook" aria-expanded="false">How do I create one?</button>
+            <p class="help-pop__body" data-help-body="webhook" hidden>
+              In your server: <strong>Server Settings &rarr; Integrations &rarr; Webhooks &rarr; New Webhook</strong>. Name it,
+              pick the channel that should receive alerts, then <strong>Copy Webhook URL</strong>.
+            </p>
+          </div>
+
+          <fieldset class="webhook-form__field">
+            <legend class="webhook-form__label">Game</legend>
+            <div class="wh-game-tabs" data-wh-game-tabs>
+              <button type="button" class="wh-game-tab is-active" data-wh-game-tab="wow">World of Warcraft</button>
+              <button type="button" class="wh-game-tab" data-wh-game-tab="ffxiv">Final Fantasy XIV</button>
+            </div>
+          </fieldset>
+
+          <div class="webhook-form__field">
+            <span class="webhook-form__label" id="wh-region-label">Region</span>
+            <div class="wh-region-row" data-wh-region-row role="tablist" aria-labelledby="wh-region-label"></div>
+          </div>
+
+          <div class="webhook-form__field">
+            <label class="webhook-form__label" for="wh-server-search">Server</label>
+            <input
+              id="wh-server-search"
+              class="webhook-form__input"
+              type="search"
+              data-wh-server-search
+              placeholder="Search realms…"
+              autocomplete="off"
+            />
+            <span class="wh-realm-count" data-wh-server-count>-</span>
+            <ul class="wh-server-list" data-wh-server-list role="listbox" aria-label="Servers"></ul>
+            <p class="wh-selection" data-wh-selection>No server selected.</p>
+          </div>
+
+          <div class="webhook-form__field">
+            <label class="webhook-form__label" for="wh-role-id">Role to mention (optional)</label>
+            <input
+              id="wh-role-id"
+              class="webhook-form__input"
+              type="text"
+              name="roleId"
+              placeholder="e.g. 123456789012345678"
+              autocomplete="off"
+            />
+            <button type="button" class="help-pop" data-help="role" aria-expanded="false">How do I find a role ID?</button>
+            <p class="help-pop__body" data-help-body="role" hidden>
+              Enable <strong>Developer Mode</strong> in Discord (User Settings &rarr; Advanced), then
+              <strong>right-click a role</strong> in Server Settings &rarr; Roles and choose <strong>Copy Role ID</strong>.
+              Only mentionable roles can be pinged.
+            </p>
+          </div>
+
+          <input type="text" name="honeypot" class="webhook-form__honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+          <p class="webhook-form__status" data-webhook-status role="status" aria-live="polite"></p>
+
+          <button type="submit" class="btn-cta" data-webhook-submit disabled>Send test alert and subscribe</button>
+        </form>
       </section>
 
       <h2 id="features">Features</h2>
@@ -376,13 +466,26 @@
       <div class="changelog-list">
         <details class="changelog-entry" open>
           <summary>
+            <span>v1.4</span>
+            <span class="changelog-date">2026-08-09</span>
+          </summary>
+          <div class="changelog-body">
+            <p>
+              Webhook subscriptions: get server alerts without adding the bot. Paste a Discord webhook URL, pick a
+              game, region, and server, and ServersUp posts a test alert to confirm before saving. Optional role
+              mention for pings.
+            </p>
+          </div>
+        </details>
+        <details class="changelog-entry">
+          <summary>
             <span>v1.3.1</span>
             <span class="changelog-date">2026-07-13</span>
           </summary>
           <div class="changelog-body">
             <p>
               Website URL: live status and install docs are at
-              <a href="https://serversup.armasn.dev/">serversup.armasn.dev</a>.
+              
             </p>
           </div>
         </details>
@@ -517,6 +620,9 @@
         >
           Add to Discord
         </a>
+        <button type="button" class="btn-cta" data-webhook-open aria-expanded="false" aria-controls="webhook-form">
+          Add webhook instead
+        </button>
         <p class="install-cta-after-faq__hint">Free forever. Alerts only when a realm you pick changes status.</p>
       </div>
 
