@@ -272,8 +272,9 @@
           <button type="button" class="webhook-modal__close" data-webhook-close aria-label="Close">&#215;</button>
         </div>
         <p class="muted">
-          Get alerts in any channel without adding the bot. Create a webhook in that channel, paste it below, pick a
-          server, and we will post a test alert to confirm it works before saving.
+          Get alerts in any channel without adding the bot. Create a webhook in that channel, paste it below, and pick a
+          server - or choose <strong>ALL SERVERS</strong> to be notified once when every server goes down and once when they
+          all come back up. We will post a test alert to confirm it works before saving.
         </p>
 
         <form class="webhook-form" data-webhook-form novalidate>
@@ -502,6 +503,20 @@
       <div class="changelog-list">
         <details class="changelog-entry" open>
           <summary>
+            <span>v1.5</span>
+            <span class="changelog-date">2026-08-10</span>
+          </summary>
+          <div class="changelog-body">
+            <p>
+              Subscribe to ALL servers: pick <strong>ALL SERVERS</strong> in the webhook form (or use
+              <code>/subscribe</code> with just a game or a game + region in Discord) to watch an entire game or region
+              at once. You get one alert when every server is down and one when they all come back up - no spam for
+              individual realms. Works with both webhook subscriptions and the Discord bot.
+            </p>
+          </div>
+        </details>
+        <details class="changelog-entry">
+          <summary>
             <span>v1.4</span>
             <span class="changelog-date">2026-08-09</span>
           </summary>
@@ -628,6 +643,14 @@
             No. Alerts fire only when a realm you subscribed to actually changes status. You pick the games and
             realms, so the channel stays quiet until something you configured changes. More on
             <a href="/blog/game-server-status-alerts-discord-without-spam/">alerts without spam</a>.
+          </p>
+        </details>
+        <details class="faq-item">
+          <summary>What does subscribing to ALL servers mean?</summary>
+          <p>
+            Watching <strong>ALL servers</strong> covers every realm of a game (or of a region, like all US realms).
+            You get one alert when every server in that scope is down, and one when they all come back up - instead of
+            a message for each individual realm. It is a good fit for game-wide maintenance or region-wide outages.
           </p>
         </details>
         <details class="faq-item">

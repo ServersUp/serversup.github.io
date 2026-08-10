@@ -274,6 +274,7 @@ async function setupWebhookForm() {
   let region = GAMES.wow.defaultRegion;
   let servers = [];
   let selectedServer = "";
+  let selectionKind = ""; // "game" | "region" | "server"
 
   if (
     !(form instanceof HTMLFormElement) ||
@@ -294,22 +295,30 @@ async function setupWebhookForm() {
     if (kind) statusEl.classList.add(kind);
   }
 
-  function setSelected(server) {
-    selectedServer = server;
+  function setSelected(kind, label) {
+    selectionKind = kind || "";
+    selectedServer = kind === "server" ? label : "";
+    const human =
+      kind === "game"
+        ? "ALL servers of " + GAMES[gameId].name + " — every region"
+        : kind === "region"
+          ? "ALL servers — " + GAMES[gameId].regions[region]
+          : label || "";
     if (selectionEl) {
-      selectionEl.textContent = server ? "Selected: " + server : "No server selected.";
+      selectionEl.textContent = human ? "Selected: " + human : "No server selected.";
     }
     for (const li of listEl.children) {
       if (!(li instanceof HTMLElement)) continue;
       const code = li.querySelector("code");
       const name = code ? code.textContent : "";
-      li.classList.toggle("is-selected", name === server);
+      const k = li.getAttribute("data-kind") || "server";
+      li.classList.toggle("is-selected", k === kind && name === label);
     }
     updateSubmit();
   }
 
   function updateSubmit() {
-    const ready = Boolean(webhookInput && webhookInput.value.trim()) && Boolean(selectedServer);
+    const ready = Boolean(webhookInput && webhookInput.value.trim()) && selectionKind !== "";
     if (submitBtn instanceof HTMLButtonElement) {
       submitBtn.disabled = !ready || form.dataset.submitting === "true";
     }
@@ -361,26 +370,51 @@ async function setupWebhookForm() {
     }
   }
 
+  function makeAllOption(kind, label) {
+    const li = document.createElement("li");
+    li.setAttribute("data-kind", kind);
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "wh-server-item wh-server-item--all";
+    btn.setAttribute("role", "option");
+    btn.setAttribute("aria-selected", selectionKind === kind ? "true" : "false");
+    const code = document.createElement("code");
+    code.textContent = label;
+    btn.appendChild(code);
+    const hint = document.createElement("span");
+    hint.className = "wh-server-item__hint";
+    hint.textContent =
+      kind === "game"
+        ? "Notified once if every server is down, once when they all recover"
+        : "Notified once if every server in this region is down, once when they all recover";
+    btn.appendChild(hint);
+    btn.addEventListener("click", () => setSelected(kind, label));
+    li.appendChild(btn);
+    return li;
+  }
+
   function renderList(filtered) {
     listEl.replaceChildren();
+    listEl.appendChild(makeAllOption("game", "ALL SERVERS — every region"));
+    listEl.appendChild(makeAllOption("region", "ALL SERVERS — " + GAMES[gameId].regions[region]));
     if (filtered.length === 0) {
       const empty = document.createElement("li");
       empty.className = "wh-server-list__empty";
       empty.textContent = "No matches.";
       listEl.appendChild(empty);
-      return;
     }
     for (const name of filtered) {
       const li = document.createElement("li");
+      li.setAttribute("data-kind", "server");
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "wh-server-item";
       btn.setAttribute("role", "option");
-      btn.setAttribute("aria-selected", name === selectedServer ? "true" : "false");
+      btn.setAttribute("aria-selected", selectionKind === "server" && name === selectedServer ? "true" : "false");
       const code = document.createElement("code");
       code.textContent = name;
       btn.appendChild(code);
-      btn.addEventListener("click", () => setSelected(name));
+      btn.addEventListener("click", () => setSelected("server", name));
       li.appendChild(btn);
       listEl.appendChild(li);
     }
@@ -468,17 +502,17 @@ async function setupWebhookForm() {
       setStatus("Paste a Discord webhook URL first.", "is-error");
       return;
     }
-    if (!selectedServer) {
-      setStatus("Pick a server from the list.", "is-error");
+    if (selectionKind !== "game" && selectionKind !== "region" && !selectedServer) {
+      setStatus("Pick a server, or choose ALL servers.", "is-error");
       return;
     }
 
     const payload = {
       webhookUrl: webhookURL,
       game: gameId,
-      region: region,
-      server: selectedServer,
     };
+    if (selectionKind !== "game") payload.region = region;
+    if (selectionKind === "server") payload.server = selectedServer;
     if (roleInput && roleInput.value.trim()) payload.roleId = roleInput.value.trim();
     if (honeypot && honeypot.value) payload.honeypot = honeypot.value;
 
@@ -496,9 +530,15 @@ async function setupWebhookForm() {
       const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
-        setStatus("Done. Check Discord for your test alert - it is live now.", "is-success");
+        let msg = "Done. Check Discord for your test alert - it is live now.";
+        if (selectionKind === "game") {
+          msg = "Done. Subscribed to ALL servers - you'll be notified once if every server is down, and once when they all recover.";
+        } else if (selectionKind === "region") {
+          msg = "Done. Subscribed to ALL " + GAMES[gameId].regions[region] + " servers - you'll be notified once if every server is down, and once when they all recover.";
+        }
+        setStatus(msg, "is-success");
         if (typeof gtag === "function") {
-          gtag("event", "webhook_subscribed", { game: gameId, region: region, server: selectedServer });
+          gtag("event", "webhook_subscribed", { game: gameId, region: selectionKind === "game" ? "" : region, server: selectedServer, scope: selectionKind === "game" ? "game" : selectionKind === "region" ? "region" : "server" });
         }
       } else if (res.status === 409) {
         setStatus("This webhook is already subscribed to that server.", "is-error");
