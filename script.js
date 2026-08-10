@@ -274,7 +274,7 @@ async function setupWebhookForm() {
   let region = GAMES.wow.defaultRegion;
   let servers = [];
   let selectedServer = "";
-  let selectionKind = ""; // "game" | "region" | "server"
+  let selectionKind = ""; // "region" | "server"
 
   if (
     !(form instanceof HTMLFormElement) ||
@@ -299,11 +299,9 @@ async function setupWebhookForm() {
     selectionKind = kind || "";
     selectedServer = kind === "server" ? label : "";
     const human =
-      kind === "game"
-        ? "ALL servers of " + GAMES[gameId].name + " — every region"
-        : kind === "region"
-          ? "ALL servers — " + GAMES[gameId].regions[region]
-          : label || "";
+      kind === "region"
+        ? "ALL servers - " + GAMES[gameId].regions[region]
+        : label || "";
     if (selectionEl) {
       selectionEl.textContent = human ? "Selected: " + human : "No server selected.";
     }
@@ -384,9 +382,7 @@ async function setupWebhookForm() {
     const hint = document.createElement("span");
     hint.className = "wh-server-item__hint";
     hint.textContent =
-      kind === "game"
-        ? "Notified once if every server is down, once when they all recover"
-        : "Notified once if every server in this region is down, once when they all recover";
+      "Notified once if every server in this region is down, once when they all recover";
     btn.appendChild(hint);
     btn.addEventListener("click", () => setSelected(kind, label));
     li.appendChild(btn);
@@ -395,8 +391,7 @@ async function setupWebhookForm() {
 
   function renderList(filtered) {
     listEl.replaceChildren();
-    listEl.appendChild(makeAllOption("game", "ALL SERVERS — every region"));
-    listEl.appendChild(makeAllOption("region", "ALL SERVERS — " + GAMES[gameId].regions[region]));
+    listEl.appendChild(makeAllOption("region", "ALL SERVERS - " + GAMES[gameId].regions[region]));
     if (filtered.length === 0) {
       const empty = document.createElement("li");
       empty.className = "wh-server-list__empty";
@@ -502,16 +497,16 @@ async function setupWebhookForm() {
       setStatus("Paste a Discord webhook URL first.", "is-error");
       return;
     }
-    if (selectionKind !== "game" && selectionKind !== "region" && !selectedServer) {
-      setStatus("Pick a server, or choose ALL servers.", "is-error");
+    if (selectionKind !== "region" && !selectedServer) {
+      setStatus("Pick a server, or choose ALL servers in a region.", "is-error");
       return;
     }
 
     const payload = {
       webhookUrl: webhookURL,
       game: gameId,
+      region: region,
     };
-    if (selectionKind !== "game") payload.region = region;
     if (selectionKind === "server") payload.server = selectedServer;
     if (roleInput && roleInput.value.trim()) payload.roleId = roleInput.value.trim();
     if (honeypot && honeypot.value) payload.honeypot = honeypot.value;
@@ -531,14 +526,12 @@ async function setupWebhookForm() {
 
       if (res.ok) {
         let msg = "Done. Check Discord for your test alert - it is live now.";
-        if (selectionKind === "game") {
-          msg = "Done. Subscribed to ALL servers - you'll be notified once if every server is down, and once when they all recover.";
-        } else if (selectionKind === "region") {
+        if (selectionKind === "region") {
           msg = "Done. Subscribed to ALL " + GAMES[gameId].regions[region] + " servers - you'll be notified once if every server is down, and once when they all recover.";
         }
         setStatus(msg, "is-success");
         if (typeof gtag === "function") {
-          gtag("event", "webhook_subscribed", { game: gameId, region: selectionKind === "game" ? "" : region, server: selectedServer, scope: selectionKind === "game" ? "game" : selectionKind === "region" ? "region" : "server" });
+          gtag("event", "webhook_subscribed", { game: gameId, region: region, server: selectedServer, scope: selectionKind === "region" ? "region" : "server" });
         }
       } else if (res.status === 409) {
         setStatus("This webhook is already subscribed to that server.", "is-error");
