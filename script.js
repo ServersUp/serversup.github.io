@@ -530,9 +530,7 @@ async function setupWebhookForm() {
           msg = "Done. Subscribed to ALL " + GAMES[gameId].regions[region] + " servers - you'll be notified once if every server is down, and once when they all recover.";
         }
         setStatus(msg, "is-success");
-        if (typeof gtag === "function") {
-          gtag("event", "webhook_subscribed", { game: gameId, region: region, server: selectedServer, scope: selectionKind === "region" ? "region" : "server" });
-        }
+        window.ServersUpAnalytics?.track("webhook_subscribed", { game: gameId, region: region, server: selectedServer, scope: selectionKind === "region" ? "region" : "server" });
       } else if (res.status === 409) {
         setStatus("This webhook is already subscribed to that server.", "is-error");
       } else {

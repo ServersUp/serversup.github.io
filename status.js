@@ -283,8 +283,8 @@ function setupStatusPage() {
     region = key;
     query = "";
     searchInput.value = "";
-    if (fromUser && typeof gtag === "function") {
-      gtag("event", "status_region_selected", { game: gameId, region: key });
+    if (fromUser) {
+      window.ServersUpAnalytics?.track("status_region_selected", { game: gameId, region: key });
     }
     renderRegions();
     const label = GAME_META[gameId]?.regionLabels?.[key] || key.toUpperCase();
@@ -295,8 +295,8 @@ function setupStatusPage() {
   async function selectGame(id, fromUser) {
     if (!GAME_META[id]) return;
 
-    if (fromUser && typeof gtag === "function") {
-      gtag("event", "status_game_selected", { game: id });
+    if (fromUser) {
+      window.ServersUpAnalytics?.track("status_game_selected", { game: id });
     }
 
     gameId = id;
