@@ -727,9 +727,39 @@
       <section class="feedback" id="feedback" aria-label="Feedback">
         <h2>Feedback</h2>
         <p>
-          Have a suggestion, bug report, or question? Email me at
-          <a href="mailto:armasndev@proton.me">armasndev@proton.me</a>.
+          Have a suggestion, bug report, or question? Send it below and I will read it.
         </p>
+        <form class="feedback-form" data-feedback-form novalidate>
+          <div class="feedback-form__field">
+            <label class="feedback-form__label" for="feedback-message">Message</label>
+            <textarea
+              id="feedback-message"
+              class="feedback-form__textarea"
+              name="message"
+              maxlength="4000"
+              required
+              rows="5"
+              placeholder="What is on your mind?"
+            ></textarea>
+          </div>
+          <div class="feedback-form__field">
+            <label class="feedback-form__label" for="feedback-subscription-id">Subscription ID (optional)</label>
+            <input
+              id="feedback-subscription-id"
+              class="feedback-form__input"
+              type="text"
+              name="subscriptionId"
+              maxlength="128"
+              autocomplete="off"
+              placeholder="e.g. sub_abc123"
+            />
+            <p class="feedback-form__help">
+              Include the subscription ID from your report if you have one. It helps me find the right record faster.
+            </p>
+          </div>
+          <p class="feedback-form__status" data-feedback-status role="status" aria-live="polite"></p>
+          <button type="submit" class="btn-cta" data-feedback-submit>Send feedback</button>
+        </form>
       </section>
 
       <section class="support" id="support" aria-label="Support">
