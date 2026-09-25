@@ -2,18 +2,16 @@
 
 Canonical host: **`https://serversup.armasn.dev`** (S3 `serversup-site` + CloudFront; DNS at Cloudflare).
 
-GitHub repo: **`ServersUp/serversup.github.io`** (org Pages apex name; same repo ID as the former `servers-up-website` slug).
+GitHub repo: **`ServersUp/serversup.github.io`** (historical repo name; same repo ID as the former `servers-up-website` slug).
 
-### Dual-branch model
+### Hosting and branches
 
 | Branch | Role |
 |--------|------|
 | **`main`** | Product site source. Push to `main` runs [`.github/workflows/publish-site.yml`](.github/workflows/publish-site.yml) (OIDC → S3 sync + CloudFront invalidation). |
-| **`pages-offline`** | Legacy `https://serversup.github.io/` only. Exact-path meta-refresh + canonical redirects to matching `serversup.armasn.dev` URLs. Not the product site. |
+| **`pages-offline`** | Retained legacy redirect stubs. GitHub Pages is disabled, so this branch is not published. |
 
-**Do not** point GitHub Pages at **`main`**. Pages source must stay **`pages-offline` /.** Serving `main` on github.io would duplicate the CDN site and confuse crawlers.
-
-**Do not** add analytics (gtag / GA4) or product HTML to `pages-offline` stubs. Redirects stay minimal; unknown paths stay HTTP 404 (human-only `404.html`, no SEO meta-refresh claim).
+The legacy `https://serversup.github.io/` host returns HTTP 404. Keep GitHub Pages disabled so the CDN site remains the only published copy.
 
 Canonical for indexing and links remains **`https://serversup.armasn.dev`**.
 
