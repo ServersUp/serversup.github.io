@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://serversup.armasn.dev/sitemap.xml
+Sitemap: https://serversup.app/sitemap.xml
