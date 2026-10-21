@@ -1,6 +1,6 @@
 ## ServersUp Website
 
-Canonical host: **`https://serversup.armasn.dev`** (S3 `serversup-site` + CloudFront; DNS at Cloudflare).
+Canonical host: **`https://serversup.app`** (S3 `serversup-site` + CloudFront; DNS at Cloudflare).
 
 GitHub repo: **`ServersUp/serversup.github.io`** (historical repo name; same repo ID as the former `servers-up-website` slug).
 
@@ -13,7 +13,7 @@ GitHub repo: **`ServersUp/serversup.github.io`** (historical repo name; same rep
 
 The legacy `https://serversup.github.io/` host returns HTTP 404. Keep GitHub Pages disabled so the CDN site remains the only published copy.
 
-Canonical for indexing and links remains **`https://serversup.armasn.dev`**.
+Canonical for indexing and links remains **`https://serversup.app`**.
 
 ### Stack
 
@@ -28,7 +28,7 @@ Canonical for indexing and links remains **`https://serversup.armasn.dev`**.
 python3 -m http.server 5173
 ```
 
-Status fetch uses same-origin `/status/latest.json` on `serversup.armasn.dev`; elsewhere (local preview) it falls back to `https://serversup.armasn.dev/status/latest.json` (CloudFront CORS `*`).
+Status fetch uses same-origin `/status/latest.json` on `serversup.app`; elsewhere (local preview) it falls back to `https://serversup.app/status/latest.json` (CloudFront CORS `*`).
 
 ### Data
 

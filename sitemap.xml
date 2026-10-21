@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://serversup.armasn.dev/</loc>
+    <loc>https://serversup.app/</loc>
     <lastmod>2026-08-09</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/install/</loc>
+    <loc>https://serversup.app/install/</loc>
     <lastmod>2026-09-12</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/privacy/</loc>
+    <loc>https://serversup.app/privacy/</loc>
     <lastmod>2026-08-09</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/terms/</loc>
+    <loc>https://serversup.app/terms/</loc>
     <lastmod>2026-08-09</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/blog/</loc>
+    <loc>https://serversup.app/blog/</loc>
     <lastmod>2026-08-09</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/blog/ffxiv-maintenance/</loc>
+    <loc>https://serversup.app/blog/ffxiv-maintenance/</loc>
     <lastmod>2026-08-09</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/blog/is-wow-down/</loc>
+    <loc>https://serversup.app/blog/is-wow-down/</loc>
     <lastmod>2026-07-26</lastmod>
   </url>
   <url>
-    <loc>https://serversup.armasn.dev/blog/game-server-status-alerts-discord-without-spam/</loc>
+    <loc>https://serversup.app/blog/game-server-status-alerts-discord-without-spam/</loc>
     <lastmod>2026-07-19</lastmod>
   </url>
 </urlset>
