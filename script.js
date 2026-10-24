@@ -4,6 +4,8 @@ const DISCORD_OAUTH_URL =
 const WEBHOOK_SUBSCRIBE_URL =
   "https://hlgru24uwnv2vncb5rh4bwishq0sqbpk.lambda-url.us-east-1.on.aws/";
 
+const FEEDBACK_API_URL = "";
+
 const GAMES = {
   wow: {
     label: "World of Warcraft",
@@ -548,9 +550,97 @@ async function setupWebhookForm() {
   showGame(gameId);
 }
 
+function setupFeedbackForm() {
+  const form = document.querySelector("[data-feedback-form]");
+  if (!(form instanceof HTMLFormElement)) return;
+
+  const messageInput = form.querySelector('textarea[name="message"]');
+  const subIdInput = form.querySelector('input[name="subscriptionId"]');
+  const statusEl = form.querySelector("[data-feedback-status]");
+  const submitBtn = form.querySelector("[data-feedback-submit]");
+
+  if (
+    !(messageInput instanceof HTMLTextAreaElement) ||
+    !(statusEl instanceof HTMLElement) ||
+    !(submitBtn instanceof HTMLButtonElement)
+  ) {
+    return;
+  }
+
+  function setStatus(message, kind) {
+    statusEl.textContent = message || "";
+    statusEl.classList.remove("is-error", "is-success");
+    if (kind) statusEl.classList.add(kind);
+  }
+
+  function setSubmitting(next) {
+    submitBtn.disabled = next;
+    submitBtn.textContent = next ? "Sending…" : "Send feedback";
+  }
+
+  function runeLength(str) {
+    return [...str].length;
+  }
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+
+    const message = messageInput.value.trim();
+    const subId = subIdInput ? subIdInput.value.trim() : "";
+
+    if (!message) {
+      setStatus("Please enter a message before sending.", "is-error");
+      messageInput.focus();
+      return;
+    }
+    if (runeLength(message) > 4000) {
+      setStatus("Message is too long. Keep it under 4000 characters.", "is-error");
+      messageInput.focus();
+      return;
+    }
+    if (subId && runeLength(subId) > 128) {
+      setStatus("Subscription ID is too long. Keep it under 128 characters.", "is-error");
+      if (subIdInput) subIdInput.focus();
+      return;
+    }
+
+    if (!FEEDBACK_API_URL) {
+      setStatus("Feedback is not available yet. Please try again later.", "is-error");
+      return;
+    }
+
+    const payload = { message: message };
+    if (subId) payload.subscriptionId = subId;
+
+    setSubmitting(true);
+    setStatus("");
+
+    try {
+      const res = await fetch(FEEDBACK_API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        setStatus("Thanks. Your feedback was sent.", "is-success");
+        form.reset();
+      } else {
+        setStatus("Could not send your feedback right now. Please try again later.", "is-error");
+      }
+    } catch {
+      setStatus("Could not reach the feedback service. Check your connection and try again.", "is-error");
+    } finally {
+      setSubmitting(false);
+    }
+  });
+}
+
 setYear();
 setupMobileNav();
 setupSmoothScroll();
 hardenExternalLinks();
 setupGameBrowser();
 setupWebhookForm();
+setupFeedbackForm();
