@@ -1971,31 +1971,6 @@ code {
   color: var(--muted);
 }
 
-.roadmap-sub {
-  margin-top: 2.5rem;
-}
-
-.shipped {
-  margin: 1rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.shipped li {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.25rem 1rem;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--line);
-  color: var(--muted);
-}
-
-.shipped time {
-  color: var(--dim);
-  font-size: 0.9rem;
-}
-
 .releases {
   display: flex;
   flex-direction: column;
