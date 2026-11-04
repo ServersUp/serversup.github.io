@@ -11,7 +11,6 @@ const GAMES = {
     dataUrl: "../data/wow-servers.json",
     regions: { us: "US", eu: "EU", kr: "KR", tw: "TW" },
     defaultRegion: "us",
-    unit: "realms",
   },
   ffxiv: {
     label: "Final Fantasy XIV",
@@ -19,64 +18,8 @@ const GAMES = {
     dataUrl: "../data/ffxiv-servers.json",
     regions: { na: "NA", eu: "EU", jp: "JP", oce: "OCE" },
     defaultRegion: "na",
-    unit: "worlds",
   },
 };
-
-function setYear() {
-  const el = document.getElementById("year");
-  if (el) el.textContent = String(new Date().getFullYear());
-}
-
-function setupMobileNav() {
-  const toggle = document.querySelector(".nav-toggle");
-  const links = document.getElementById("nav-links");
-  if (!(toggle instanceof HTMLButtonElement) || !(links instanceof HTMLElement)) return;
-
-  function setOpen(next) {
-    links.classList.toggle("is-open", next);
-    toggle.setAttribute("aria-expanded", next ? "true" : "false");
-  }
-
-  toggle.addEventListener("click", () => setOpen(!links.classList.contains("is-open")));
-
-  links.addEventListener("click", (e) => {
-    const t = e.target;
-    if (t instanceof HTMLAnchorElement) setOpen(false);
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setOpen(false);
-  });
-
-  document.addEventListener("click", (e) => {
-    const t = e.target;
-    if (!(t instanceof Node)) return;
-    if (!links.classList.contains("is-open")) return;
-    if (links.contains(t) || toggle.contains(t)) return;
-    setOpen(false);
-  });
-}
-
-function setupSmoothScroll() {
-  document.addEventListener("click", (e) => {
-    const t = e.target;
-    if (!(t instanceof HTMLElement)) return;
-    const a = t.closest('a[data-scroll="true"]');
-    if (!(a instanceof HTMLAnchorElement)) return;
-
-    const href = a.getAttribute("href") || "";
-    if (!href.startsWith("#")) return;
-
-    const target = document.querySelector(href);
-    if (!(target instanceof HTMLElement)) return;
-
-    e.preventDefault();
-    const targetTop = target.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: Math.max(0, targetTop - 12), behavior: "smooth" });
-    history.pushState(null, "", href);
-  });
-}
 
 function hardenExternalLinks() {
   for (const a of document.querySelectorAll('a[target="_blank"]')) {
@@ -99,142 +42,6 @@ async function loadGameRegions(id) {
   if (!res.ok) throw new Error(String(res.status));
   const data = await res.json();
   return data.regions || {};
-}
-
-async function setupGameBrowser() {
-  const root = document.getElementById("game-browser");
-  if (!(root instanceof HTMLElement)) return;
-
-  const gameTabs = root.querySelectorAll("[data-game-tab]");
-  const regionRow = root.querySelector("[data-region-row]");
-  const searchInput = root.querySelector("[data-realm-search]");
-  const listEl = root.querySelector("[data-realm-list]");
-  const countEl = root.querySelector("[data-realm-count]");
-  const statusEl = document.querySelector("[data-realm-status]");
-
-  if (
-    !(regionRow instanceof HTMLElement) ||
-    !(searchInput instanceof HTMLInputElement) ||
-    !(listEl instanceof HTMLElement) ||
-    !(countEl instanceof HTMLElement)
-  ) {
-    return;
-  }
-
-  const cache = {};
-  let gameId = "wow";
-  let region = GAMES.wow.defaultRegion;
-  let servers = [];
-
-  async function getRegions(id) {
-    if (cache[id]) return cache[id];
-    const regions = await loadGameRegions(id);
-    cache[id] = regions;
-    return regions;
-  }
-
-  function setGameTabActive(id) {
-    for (const tab of gameTabs) {
-      if (!(tab instanceof HTMLButtonElement)) continue;
-      const active = tab.getAttribute("data-game-tab") === id;
-      tab.classList.toggle("is-active", active);
-      tab.setAttribute("aria-selected", active ? "true" : "false");
-    }
-  }
-
-  function renderRegionTabs(regions) {
-    regionRow.replaceChildren();
-    const cfg = GAMES[gameId];
-    const keys = Object.keys(cfg.regions);
-    if (!keys.includes(region)) region = cfg.defaultRegion;
-
-    for (const key of keys) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "region-tab";
-      btn.setAttribute("data-region-tab", key);
-      btn.setAttribute("role", "tab");
-      btn.textContent = cfg.regions[key];
-      if (key === region) {
-        btn.classList.add("is-active");
-        btn.setAttribute("aria-selected", "true");
-      } else {
-        btn.setAttribute("aria-selected", "false");
-      }
-      btn.addEventListener("click", () => {
-        if (region === key) return;
-        region = key;
-        renderRegionTabs(regions);
-        applyServers(regions[region] || []);
-      });
-      regionRow.appendChild(btn);
-    }
-  }
-
-  function renderList(filtered) {
-    listEl.replaceChildren();
-    if (filtered.length === 0) {
-      const empty = document.createElement("li");
-      empty.className = "realm-empty";
-      empty.textContent = "No matches.";
-      listEl.appendChild(empty);
-      return;
-    }
-    for (const name of filtered) {
-      const li = document.createElement("li");
-      li.className = "realm-item";
-      const code = document.createElement("code");
-      code.textContent = name;
-      li.appendChild(code);
-      listEl.appendChild(li);
-    }
-  }
-
-  function applyFilter() {
-    const q = searchInput.value.trim().toLowerCase();
-    const filtered = q.length === 0 ? servers : servers.filter((s) => s.toLowerCase().includes(q));
-    renderList(filtered);
-    countEl.textContent = `${filtered.length} / ${servers.length}`;
-  }
-
-  function applyServers(next) {
-    servers = Array.isArray(next) ? [...next].sort((a, b) => a.localeCompare(b)) : [];
-    searchInput.value = "";
-    applyFilter();
-  }
-
-  async function showGame(id) {
-    gameId = id;
-    region = GAMES[id].defaultRegion;
-    setGameTabActive(id);
-    if (statusEl instanceof HTMLElement) statusEl.textContent = "Loading…";
-
-    try {
-      const regions = await getRegions(id);
-      renderRegionTabs(regions);
-      applyServers(regions[region] || []);
-      if (statusEl instanceof HTMLElement) statusEl.textContent = "";
-    } catch {
-      regionRow.replaceChildren();
-      listEl.replaceChildren();
-      countEl.textContent = "-";
-      if (statusEl instanceof HTMLElement) statusEl.textContent = "Could not load server list.";
-    }
-  }
-
-  for (const tab of gameTabs) {
-    tab.addEventListener("click", () => {
-      if (!(tab instanceof HTMLButtonElement)) return;
-      const id = tab.getAttribute("data-game-tab");
-      if (!id || id === gameId || !GAMES[id]) return;
-      showGame(id);
-    });
-  }
-
-  searchInput.addEventListener("input", applyFilter);
-  searchInput.addEventListener("search", applyFilter);
-
-  showGame(gameId);
 }
 
 function setupHelpPops(root) {
@@ -269,6 +76,7 @@ async function setupWebhookForm() {
   const countEl = panel.querySelector("[data-wh-server-count]");
   const selectionEl = panel.querySelector("[data-wh-selection]");
 
+  const SUBMIT_LABEL = "Send test alert and subscribe";
   const cache = {};
   let gameId = "wow";
   let region = GAMES.wow.defaultRegion;
@@ -310,16 +118,34 @@ async function setupWebhookForm() {
       const code = li.querySelector("code");
       const name = code ? code.textContent : "";
       const k = li.getAttribute("data-kind") || "server";
-      li.classList.toggle("is-selected", k === kind && name === label);
+      const on = k === kind && name === label;
+      li.classList.toggle("is-selected", on);
+      const optionBtn = li.querySelector('[role="option"]');
+      if (optionBtn) optionBtn.setAttribute("aria-selected", on ? "true" : "false");
     }
+    syncOptions();
+    clearDone();
     updateSubmit();
   }
 
   function updateSubmit() {
-    const ready = Boolean(webhookInput && webhookInput.value.trim()) && selectionKind !== "";
     if (submitBtn instanceof HTMLButtonElement) {
-      submitBtn.disabled = !ready || form.dataset.submitting === "true";
+      submitBtn.disabled = form.dataset.submitting === "true" || form.dataset.done === "true";
     }
+  }
+
+  function friendlyError(data) {
+    const raw = (data && data.error) || "";
+    if (/webhook|ownership|proof|url/i.test(raw)) {
+      return "We could not post to that webhook. Check the URL and that the webhook still exists, then try again.";
+    }
+    return raw || "Could not subscribe right now. Check the URL and try again.";
+  }
+
+  function clearDone() {
+    if (form.dataset.done !== "true") return;
+    delete form.dataset.done;
+    submitBtn.textContent = SUBMIT_LABEL;
   }
 
   async function getRegions(id) {
@@ -334,7 +160,15 @@ async function setupWebhookForm() {
       if (!(tab instanceof HTMLButtonElement)) continue;
       const active = tab.getAttribute("data-wh-game-tab") === id;
       tab.classList.toggle("is-active", active);
-      tab.setAttribute("aria-selected", active ? "true" : "false");
+      tab.setAttribute("aria-pressed", active ? "true" : "false");
+    }
+  }
+
+  function syncRegionButtons() {
+    for (const btn of regionRow.querySelectorAll("[data-region-tab]")) {
+      const active = btn.getAttribute("data-region-tab") === region;
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
     }
   }
 
@@ -349,27 +183,22 @@ async function setupWebhookForm() {
       btn.type = "button";
       btn.className = "region-tab";
       btn.setAttribute("data-region-tab", key);
-      btn.setAttribute("role", "tab");
       btn.textContent = cfg.regions[key];
-      if (key === region) {
-        btn.classList.add("is-active");
-        btn.setAttribute("aria-selected", "true");
-      } else {
-        btn.setAttribute("aria-selected", "false");
-      }
       btn.addEventListener("click", () => {
         if (region === key) return;
         region = key;
-        renderRegionTabs(regions);
+        syncRegionButtons();
         applyServers(regions[region] || []);
         setSelected("");
       });
       regionRow.appendChild(btn);
     }
+    syncRegionButtons();
   }
 
   function makeAllOption(kind, label) {
     const li = document.createElement("li");
+    li.setAttribute("role", "presentation");
     li.setAttribute("data-kind", kind);
     const btn = document.createElement("button");
     btn.type = "button";
@@ -395,11 +224,13 @@ async function setupWebhookForm() {
     if (filtered.length === 0) {
       const empty = document.createElement("li");
       empty.className = "wh-server-list__empty";
+      empty.setAttribute("role", "presentation");
       empty.textContent = "No matches.";
       listEl.appendChild(empty);
     }
     for (const name of filtered) {
       const li = document.createElement("li");
+      li.setAttribute("role", "presentation");
       li.setAttribute("data-kind", "server");
       const btn = document.createElement("button");
       btn.type = "button";
@@ -413,7 +244,35 @@ async function setupWebhookForm() {
       li.appendChild(btn);
       listEl.appendChild(li);
     }
+    syncOptions();
   }
+
+  function options() {
+    return Array.from(listEl.querySelectorAll('[role="option"]'));
+  }
+
+  // One tab stop for the whole list (roving tabindex); arrow keys move between options.
+  function syncOptions() {
+    const all = options();
+    const current = all.find((o) => o.getAttribute("aria-selected") === "true") || all[0];
+    for (const o of all) o.tabIndex = o === current ? 0 : -1;
+  }
+
+  listEl.addEventListener("keydown", (e) => {
+    const all = options();
+    const i = all.indexOf(document.activeElement);
+    if (i === -1) return;
+    let next = -1;
+    if (e.key === "ArrowDown") next = Math.min(i + 1, all.length - 1);
+    else if (e.key === "ArrowUp") next = Math.max(i - 1, 0);
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = all.length - 1;
+    if (next === -1) return;
+    e.preventDefault();
+    for (const o of all) o.tabIndex = -1;
+    all[next].tabIndex = 0;
+    all[next].focus();
+  });
 
   function applyFilter() {
     const q = searchInput.value.trim().toLowerCase();
@@ -441,6 +300,7 @@ async function setupWebhookForm() {
       regionRow.replaceChildren();
       listEl.replaceChildren();
       if (countEl) countEl.textContent = "-";
+      setStatus("Could not load the server list. Reload the page and try again.", "is-error");
     }
   }
 
@@ -454,7 +314,10 @@ async function setupWebhookForm() {
   }
 
   searchInput.addEventListener("input", applyFilter);
-  webhookInput.addEventListener("input", updateSubmit);
+  webhookInput.addEventListener("input", () => {
+    clearDone();
+    updateSubmit();
+  });
 
   setupHelpPops(panel);
 
@@ -484,8 +347,12 @@ async function setupWebhookForm() {
 
   panel.addEventListener("close", () => {
     if (form instanceof HTMLFormElement) form.reset();
+    clearDone();
+    for (const body of panel.querySelectorAll("[data-help-body]")) body.hidden = true;
+    for (const btn of panel.querySelectorAll("[data-help]")) btn.setAttribute("aria-expanded", "false");
     setSelected("");
     setStatus("");
+    updateSubmit();
   });
 
   form.addEventListener("submit", async (e) => {
@@ -530,27 +397,24 @@ async function setupWebhookForm() {
           msg = "Done. Subscribed to ALL " + GAMES[gameId].regions[region] + " servers - you'll be notified once if every server is down, and once when they all recover.";
         }
         setStatus(msg, "is-success");
+        form.dataset.done = "true";
         window.ServersUpAnalytics?.track("webhook_subscribed", { game: gameId, region: region, server: selectedServer, scope: selectionKind === "region" ? "region" : "server" });
       } else if (res.status === 409) {
         setStatus("This webhook is already subscribed to that server.", "is-error");
       } else {
-        setStatus((data && data.error) || "Could not subscribe right now. Check the URL and try again.", "is-error");
+        setStatus(friendlyError(data), "is-error");
       }
     } catch {
       setStatus("Could not reach the subscribe service. Check your connection and try again.", "is-error");
     } finally {
       delete form.dataset.submitting;
       updateSubmit();
-      submitBtn.textContent = "Send test alert and subscribe";
+      submitBtn.textContent = form.dataset.done === "true" ? "Subscribed" : SUBMIT_LABEL;
     }
   });
 
   showGame(gameId);
 }
 
-setYear();
-setupMobileNav();
-setupSmoothScroll();
 hardenExternalLinks();
-setupGameBrowser();
 setupWebhookForm();

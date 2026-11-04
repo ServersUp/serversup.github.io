@@ -1,25 +1,63 @@
 <!doctype html>
-<html lang="en" class="page-install">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      (function () {
+        var t = "dark";
+        try {
+          t = localStorage.getItem("serversup-theme") || t;
+        } catch (e) {}
+        var d = document.documentElement;
+        d.setAttribute("data-theme", t === "light" ? "light" : "dark");
+        d.classList.add("js");
+      })();
+    </script>
+    <script>
+      /* The changelog and roadmap moved to /changelog/. Keep old deep links working. */
+      (function () {
+        var map = { "#changelog": "/changelog/#changelog-title", "#upcoming": "/changelog/#upcoming-title" };
+        var target = map[window.location.hash];
+        if (target) window.location.replace(target);
+      })();
+    </script>
     <script src="/analytics.js"></script>
+    <title>Install ServersUp | Discord Game Server Alerts</title>
     <meta
       name="description"
-      content="Add the free ServersUp Discord bot for game server alerts. Install guide, FAQ, commands, supported games, and changelog."
+      content="Add the free ServersUp Discord bot for game server alerts. Step-by-step install guide, webhook setup, bot commands and FAQ for WoW and FFXIV."
     />
+    <meta name="theme-color" content="#0e1117" />
     <link rel="canonical" href="https://serversup.app/install/" />
-    <title>Install ServersUp | Discord Game Server Alerts</title>
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ServersUp" />
     <meta property="og:title" content="Install ServersUp | Discord Game Server Alerts" />
     <meta
       property="og:description"
-      content="Add the free ServersUp Discord bot for game server alerts. Install guide, FAQ, commands, supported games, and changelog."
+      content="Add the free ServersUp Discord bot for game server alerts. Step-by-step install guide, webhook setup, bot commands and FAQ."
     />
     <meta property="og:url" content="https://serversup.app/install/" />
     <meta property="og:image" content="https://serversup.app/assets/serversup-logo.png" />
-    <link rel="icon" href="/assets/serversup-logo.png" type="image/png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:alt" content="ServersUp logo" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Install ServersUp | Discord Game Server Alerts" />
+    <meta
+      name="twitter:description"
+      content="Add the free ServersUp Discord bot for game server alerts. Step-by-step install guide, webhook setup, bot commands and FAQ."
+    />
+    <meta name="twitter:image" content="https://serversup.app/assets/serversup-logo.png" />
+    <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/site.css" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -41,7 +79,9 @@
         },
         {
           "@type": "SoftwareApplication",
+          "@id": "https://serversup.app/#software",
           "name": "ServersUp",
+          "image": "https://serversup.app/assets/serversup-logo.png",
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "Discord",
           "url": "https://serversup.app/install/",
@@ -56,7 +96,7 @@
         {
           "@type": "HowTo",
           "name": "How to install ServersUp for Discord game server alerts",
-          "description": "Add the ServersUp bot and subscribe a channel to the realms your community cares about.",
+          "description": "Add the ServersUp bot and subscribe a channel to the servers your community cares about.",
           "totalTime": "PT2M",
           "step": [
             {
@@ -79,198 +119,263 @@
             }
           ]
         },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Is ServersUp free?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. ServersUp is free forever. There is no subscription, no per-alert fee, and no signup to use the live status board."
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is ServersUp free?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. ServersUp is free forever. There is no subscription, no per-alert fee, and no signup to use the live status page."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need Discord just to check server status?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. The live status page shows World of Warcraft and Final Fantasy XIV servers without installing anything. Discord is only needed when you want channel alerts."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Will the bot spam my Discord channel?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Alerts fire only when a server you subscribed to actually changes status. You pick the games and servers, so the channel stays quiet until something you configured changes. More on alerts without spam."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How many servers can I follow?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "As many as you like, across as many games as you like. Follow one server or many, in one channel or several. A single webhook can subscribe to a given server once."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How specific can I get with alerts?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "As specific as a single server, or as broad as every server in a region. Watching a whole region gives you one alert when all of it is down and one when it is back. Each channel keeps its own subscriptions, so different channels can follow different servers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What does subscribing to ALL servers mean?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Watching ALL servers covers every server in a region you pick, like all US servers. You get one alert when every server in that scope is down, and one when they all come back up, instead of a message for each individual server. It is a good fit for region-wide outages or maintenance."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which games does ServersUp support?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "World of Warcraft and Final Fantasy XIV today, across the regions listed on this page and on the live status page. More games may be added later."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Who can run /subscribe?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You need Manage Channels or Administrator in the Discord server to run /subscribe and /unsubscribe. Anyone in the channel can still see the alerts once a subscription exists."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How is a webhook subscription different from the bot?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "The bot posts alerts with the bot's name and needs permissions in your server. A webhook posts under its own name, needs no bot and no permissions, and cannot run any commands. Both deliver the same alerts on status changes; they are just two ways to receive them."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Why does the form send a test alert?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Before saving, ServersUp posts one test alert to your webhook. That confirms the URL works, proves you control the channel it points to, and avoids subscribing a stale or broken webhook."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Can I subscribe to the same server on both bot and webhook?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Bot subscriptions and webhook subscriptions are separate, so you can have alerts in multiple channels or use both methods at once. Each webhook can only subscribe to a given server once."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What if I delete the webhook after subscribing?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Alerts to a deleted webhook fail silently; ServersUp stops retrying them and no longer tries to deliver to that webhook. Delete the subscription or create the webhook again if you want alerts back."
+                }
               }
-            },
-            {
-              "@type": "Question",
-              "name": "Do I need Discord just to check server status?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No. The live status board on serversup.app shows World of Warcraft and Final Fantasy XIV realms without installing anything. Discord is only needed when you want channel alerts."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Will the bot spam my Discord channel?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No. Alerts fire only when a realm you subscribed to actually changes status. You pick the games and realms, so the channel stays quiet until something you configured changes."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Which games does ServersUp support?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "World of Warcraft and Final Fantasy XIV today, across the regions listed on this page and on the live status board. More games may be added later."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Who can run /subscribe?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "You need Manage Channels or Administrator in the Discord server to run /subscribe and /unsubscribe. Anyone in the channel can still see the alerts once a subscription exists."
-              }
-            }
-          ]
-        },
+            ]
+          },
         {
           "@type": "BreadcrumbList",
           "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Status",
-              "item": "https://serversup.app/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Install",
-              "item": "https://serversup.app/install/"
-            }
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://serversup.app/" },
+            { "@type": "ListItem", "position": 2, "name": "Install", "item": "https://serversup.app/install/" }
           ]
         }
       ]
     }
     </script>
+    <script src="/js/site.js" defer></script>
+    <script src="/data/games-data.js" defer></script>
+    <script src="/script.js" defer></script>
   </head>
   <body>
-    <a class="skip-link" href="#about">Skip to content</a>
+    <a class="skip-link" href="#main">Skip to content</a>
 
     <header class="site-header">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="/">
-          <img src="/assets/serversup-logo.png" alt="" width="24" height="24" decoding="async" />
-          <span>ServersUp</span>
-        </a>
-        <div class="nav-links">
-          <a class="nav-link" href="/">Status</a>
-          <a class="nav-link" href="/blog/">Blog</a>
-          <a
-            class="btn-discord btn-discord--sm"
-            href="https://discord.com/oauth2/authorize?client_id=1497867221106688181"
-            target="_blank"
-            rel="noreferrer"
-          >Add to Discord</a>
-        </div>
-      </nav>
+      <div class="wrap">
+        <nav class="nav" aria-label="Primary">
+          <a class="brand" href="/">
+            <span class="brand__mark"><img src="/assets/serversup-logo-128.png" alt="" width="32" height="32" decoding="async" /></span>
+            <span>ServersUp</span>
+          </a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          </button>
+          <div class="nav-links" id="nav-links">
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="true">
+              <span class="theme-toggle__track">
+                <span class="theme-toggle__knob"></span>
+                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 019.5 4 8.5 8.5 0 1020 14.5z" /></svg>
+              </span>
+            </button>
+            <a class="nav-link" href="/server-status/">Status</a>
+            <a class="nav-link" href="/blog/">Blog</a>
+            <a class="nav-link" href="/changelog/">Roadmap &amp; Changelog</a>
+            <a class="nav-link" href="https://ko-fi.com/R6R71Z1SRN" target="_blank" rel="noopener">Support me<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="btn btn-cta btn--sm" href="https://discord.com/oauth2/authorize?client_id=1497867221106688181" target="_blank" rel="noopener">Add to Discord<span class="sr-only"> (opens in a new tab)</span></a>
+          </div>
+        </nav>
+      </div>
     </header>
 
-    <main class="doc" id="home">
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <ol>
-          <li><a href="/">Status</a></li>
-          <li aria-current="page">Install</li>
-        </ol>
-      </nav>
-
-      <section id="about" aria-labelledby="about-heading">
-        <header class="hero">
-          <div class="hero-main">
-            <img
-              class="hero-logo"
-              src="../assets/serversup-logo.png"
-              alt=""
-              width="80"
-              height="80"
-              decoding="async"
-            />
-            <div class="hero-copy">
-              <h1 id="about-heading">Install ServersUp for Discord game server alerts</h1>
-              <p class="hero-tagline">Get notified when your community's favorite game servers go up or down.</p>
-              <p class="hero-proof">Free forever. No subscription.</p>
-              <div class="hero-games" aria-label="Supported games">
-                <a class="hero-games__link" href="#games" data-scroll="true" title="World of Warcraft">
-                  <img
-                    class="hero-games__logo"
-                    src="../assets/wow-logo-small-transparent.png"
-                    alt="World of Warcraft"
-                    width="96"
-                    height="40"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-                <a class="hero-games__link" href="#games" data-scroll="true" title="Final Fantasy XIV">
-                  <img
-                    class="hero-games__logo hero-games__logo--wide"
-                    src="../assets/ffxiv-logo-small-transparent.png"
-                    alt="Final Fantasy XIV"
-                    width="112"
-                    height="40"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        </header>
-        <p class="lead">
-          ServersUp alerts your Discord community when game servers go up or down. The bot is constantly polling game
-          servers in the background, and when something changes, it sends a notification to anybody who has subscribed to
-          that game server.
-        </p>
-        <p class="lead">
-          You do not need to keep refreshing official status pages or wait for maintenance posts that often arrive late.
-          When status changes, the alert appears in the channel your community already watches. New here?
-          <a href="/blog/game-server-status-alerts-discord-without-spam/">Why alerts only fire on change &rarr;</a>
-        </p>
-        <p>
+    <main id="main">
+      <section class="wrap page-head install-hero" id="about" aria-labelledby="install-title">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li aria-current="page">Install</li>
+          </ol>
+        </nav>
+        <h1 class="h1" id="install-title">Install ServersUp for Discord game server alerts</h1>
+        <p class="lede">Get notified when your community's favorite game servers go up or down.</p>
+        <p class="install-free">Free forever. No subscription.</p>
+        <div class="hero__actions">
+          <a class="btn btn-cta btn--lg" href="https://discord.com/oauth2/authorize?client_id=1497867221106688181" target="_blank" rel="noopener">Add Discord bot<span class="sr-only"> (opens in a new tab)</span></a>
+          <button type="button" class="btn btn--outline btn--lg" data-webhook-open aria-controls="webhook-form">Add via webhook</button>
+        </div>
+        <div class="frame frame--shadow install-alert">
           <img
-            class="alert-example"
-            src="../assets/discord-alert-example.png"
-            alt="Example ServersUp Discord alerts for wow-tichondrius going down and back up"
+            src="/assets/discord-alert-example.png"
+            alt="Example ServersUp Discord alerts for a server going down and coming back up"
             width="1280"
             height="308"
-            loading="lazy"
             decoding="async"
           />
-        </p>
-
-        <p class="hero-actions">
-          <a
-            class="btn-discord"
-            href="https://discord.com/oauth2/authorize?client_id=1497867221106688181"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Add Discord bot
-          </a>
-          <button
-            type="button"
-            class="btn-webhook"
-            data-webhook-open
-            aria-controls="webhook-form"
-          >
-            Add via webhook
-          </button>
+        </div>
+        <p class="install-intro">
+          ServersUp polls game servers in the background, and when something changes it notifies everyone who
+          subscribed to that server. No more refreshing official status pages or waiting for maintenance posts that
+          arrive late. New here? <a class="text-link" href="/blog/">Why alerts only fire on change</a>.
         </p>
       </section>
 
+      <div class="band">
+        <div class="wrap">
+          <h2 class="sr-only">Highlights</h2>
+          <ul class="features features--three" style="list-style: none; padding-inline: 0">
+            <li>
+              <h3 class="h3">Alerts within about a minute</h3>
+              <p>Notifications arrive within about a minute of a server status change.</p>
+            </li>
+            <li>
+              <h3 class="h3">Role mentions</h3>
+              <p>Optionally ping a role when you subscribe, so the right people get notified.</p>
+            </li>
+            <li>
+              <h3 class="h3">Live status, no bot needed</h3>
+              <p>Check UP and DOWN on the <a class="text-link" href="/server-status/">status page</a> without installing anything.</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <section class="wrap section" id="install" aria-labelledby="bot-title">
+        <div class="split split--top">
+          <div class="split__copy">
+            <p class="eyebrow">Option 1</p>
+            <h2 class="h2" id="bot-title">Set up the Discord bot</h2>
+            <ol class="steps">
+              <li>Add the bot to your server with the <strong>Add Discord bot</strong> button.</li>
+              <li>Pick or create a channel for updates. Make sure the bot can send messages and read message history in that channel.</li>
+              <li>Run <code>/subscribe</code> in that channel and pick a game, region and server. Autocomplete helps you fill each field with valid values. Updates are sent to the channel where you run the command.</li>
+            </ol>
+          </div>
+          <div class="split__media">
+            <div class="frame frame--shadow">
+              <img
+                src="/assets/setup-preview.gif"
+                alt="Screen recording of setting up a ServersUp subscription in Discord: running /status, subscribing a channel, and receiving a DOWN alert"
+                width="1000"
+                height="621"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="wrap section" id="install-webhook" aria-labelledby="webhook-title">
+        <div class="split split--top">
+          <div class="split__copy">
+            <p class="eyebrow">Option 2</p>
+            <h2 class="h2" id="webhook-title">Set up with a webhook</h2>
+            <p class="lede" style="margin-top: 1rem; font-size: 1.1rem">
+              Prefer a webhook? No bot, no permissions needed, no signup. Webhooks post alerts to any channel you
+              choose, without adding the bot to your server.
+            </p>
+            <ol class="steps">
+              <li>Click <strong>Add via webhook</strong> to open the form.</li>
+              <li>Create a webhook in the channel that should receive alerts (Server Settings, Integrations, Webhooks) and paste its URL into the form.</li>
+              <li>Pick the game, region and server you want to watch, then set an optional role to mention.</li>
+              <li>Submit the form. ServersUp posts a test alert to your webhook to confirm it works before saving. Alerts then flow to that channel whenever the server changes status.</li>
+            </ol>
+            <p style="margin-top: 1.5rem">
+              <button type="button" class="btn btn-cta" data-webhook-open aria-controls="webhook-form">Add via webhook</button>
+            </p>
+          </div>
+        </div>
+      </section>
+
       <dialog class="webhook-modal" id="webhook-form" aria-labelledby="webhook-heading">
+        <div class="webhook-modal__inner">
         <div class="webhook-modal__header">
           <h2 id="webhook-heading">Add a webhook subscription</h2>
           <button type="button" class="webhook-modal__close" data-webhook-close aria-label="Close">&#215;</button>
         </div>
         <p class="muted">
           Get alerts in any channel without adding the bot. Create a webhook in that channel, paste it below, pick a game
-          and region, and choose a server - or choose <strong>ALL SERVERS</strong> for that region to be notified once
+          and region, and choose a server, or choose <strong>ALL SERVERS</strong> for that region to be notified once
           when every server there is down and once when they all come back up. We will post a test alert to confirm it
           works before saving.
         </p>
-
         <form class="webhook-form" data-webhook-form novalidate>
           <div class="webhook-form__field">
             <label class="webhook-form__label" for="webhook-url">Discord webhook URL</label>
@@ -281,10 +386,11 @@
               name="webhookUrl"
               placeholder="https://discord.com/api/webhooks/0000/xxxx"
               autocomplete="off"
+              autofocus
               required
             />
-            <button type="button" class="help-pop" data-help="webhook" aria-expanded="false">How do I create one?</button>
-            <div class="help-pop__body" data-help-body="webhook" hidden>
+            <button type="button" class="help-pop" data-help="webhook" aria-expanded="false" aria-controls="help-webhook">How do I create one?</button>
+            <div class="help-pop__body" id="help-webhook" data-help-body="webhook" hidden>
               <p class="help-pop__lead">In your Discord server:</p>
               <ul>
                 <li>Open <strong>Server Settings &rarr; Integrations</strong></li>
@@ -294,24 +400,21 @@
               </ul>
             </div>
           </div>
-
           <fieldset class="webhook-form__field">
             <legend class="webhook-form__label">Game</legend>
             <div class="wh-game-tabs" data-wh-game-tabs>
-              <button type="button" class="wh-game-tab is-active" data-wh-game-tab="wow" aria-label="World of Warcraft">
-                <img class="wh-game-tab__logo" src="../assets/wow-logo-small-transparent.png" alt="World of Warcraft" width="96" height="40" decoding="async" />
+              <button type="button" class="wh-game-tab is-active" data-wh-game-tab="wow" aria-pressed="true" aria-label="World of Warcraft">
+                <img class="wh-game-tab__logo" src="/assets/wow-logo-96.png" alt="World of Warcraft" width="40" height="40" decoding="async" />
               </button>
-              <button type="button" class="wh-game-tab" data-wh-game-tab="ffxiv" aria-label="Final Fantasy XIV">
-                <img class="wh-game-tab__logo wh-game-tab__logo--wide" src="../assets/ffxiv-logo-small-transparent.png" alt="Final Fantasy XIV" width="112" height="40" decoding="async" />
+              <button type="button" class="wh-game-tab" data-wh-game-tab="ffxiv" aria-pressed="false" aria-label="Final Fantasy XIV">
+                <span class="chip"><img class="wh-game-tab__logo wh-game-tab__logo--wide" src="/assets/ffxiv-logo-small-transparent.png" alt="Final Fantasy XIV" width="112" height="31" decoding="async" /></span>
               </button>
             </div>
           </fieldset>
-
           <div class="webhook-form__field">
             <span class="webhook-form__label" id="wh-region-label">Region</span>
-            <div class="wh-region-row" data-wh-region-row role="tablist" aria-labelledby="wh-region-label"></div>
+            <div class="wh-region-row" data-wh-region-row role="group" aria-labelledby="wh-region-label"></div>
           </div>
-
           <div class="webhook-form__field">
             <label class="webhook-form__label" for="wh-server-search">Server</label>
             <input
@@ -319,14 +422,13 @@
               class="webhook-form__input"
               type="search"
               data-wh-server-search
-              placeholder="Search realms…"
+              placeholder="Search servers"
               autocomplete="off"
             />
-            <span class="wh-realm-count" data-wh-server-count>-</span>
+            <span class="wh-realm-count" data-wh-server-count role="status">-</span>
             <ul class="wh-server-list" data-wh-server-list role="listbox" aria-label="Servers"></ul>
-            <p class="wh-selection" data-wh-selection>No server selected.</p>
+            <p class="wh-selection" data-wh-selection role="status">No server selected.</p>
           </div>
-
           <div class="webhook-form__field">
             <label class="webhook-form__label" for="wh-role-id">Role to mention (optional)</label>
             <input
@@ -337,8 +439,8 @@
               placeholder="e.g. 123456789012345678"
               autocomplete="off"
             />
-            <button type="button" class="help-pop" data-help="role" aria-expanded="false">How do I find a role ID?</button>
-            <div class="help-pop__body" data-help-body="role" hidden>
+            <button type="button" class="help-pop" data-help="role" aria-expanded="false" aria-controls="help-role">How do I find a role ID?</button>
+            <div class="help-pop__body" id="help-role" data-help-body="role" hidden>
               <p class="help-pop__lead">Discord must have Developer Mode enabled:</p>
               <ul>
                 <li>Open <strong>User Settings &rarr; Advanced</strong></li>
@@ -349,415 +451,142 @@
               <p class="help-pop__note">Only mentionable roles can be pinged.</p>
             </div>
           </div>
-
-          <input type="text" name="honeypot" class="webhook-form__honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
-
+          <div class="webhook-form__honeypot" inert><input type="text" name="honeypot" tabindex="-1" autocomplete="off" /></div>
           <p class="webhook-form__status" data-webhook-status role="status" aria-live="polite"></p>
-
-          <button type="submit" class="btn-cta" data-webhook-submit disabled>Send test alert and subscribe</button>
+          <button type="submit" class="btn btn-cta" data-webhook-submit>Send test alert and subscribe</button>
         </form>
+        </div>
       </dialog>
 
-      <h2 id="features">Features</h2>
-      <ul>
-        <li>Notifications within about a minute of a server status change</li>
-        <li>Optional role mentions when you subscribe, so the right people get pinged</li>
-        <li>Live status board on the homepage - no bot required to check UP/DOWN</li>
-      </ul>
-
-      <h2 id="install">How To Set Up The Discord Bot</h2>
-      <ol class="install-steps">
-        <li>Add the bot to your server with the <strong>Add Discord bot</strong> button above.</li>
-        <li>
-          Pick or create a channel for updates. Make sure the bot can send messages and read message history in that
-          channel.
-        </li>
-        <li>
-          Run <code>/subscribe</code> in that channel and pick game, region, and server. Autocomplete helps you fill
-          each field with valid values. Updates are sent to the channel where you run the command.
-        </li>
-      </ol>
-      <p>
-        <img
-          class="demo-gif"
-          src="../assets/serversup-demo.gif"
-          alt="Demo of setting up a ServersUp subscription in Discord"
-          width="1294"
-          height="804"
-          loading="lazy"
-          decoding="async"
-        />
-      </p>
-
-      <h2 id="install-webhook">Set Up With A Webhook</h2>
-      <p>
-        Prefer a webhook? No bot, no permissions needed, no signup. Webhooks post alerts to any channel you choose,
-        without adding the bot to your server.
-      </p>
-      <ol class="install-steps">
-        <li>
-          Click <strong>Add via webhook</strong> above to open the form. You can also reach it from the buttons at the
-          bottom of this page.
-        </li>
-        <li>
-          Create a webhook in the channel that should receive alerts (Server Settings &rarr; Integrations &rarr;
-          Webhooks) and paste its URL into the form.
-        </li>
-        <li>Pick the game, region, and server you want to watch, then set an optional role to mention.</li>
-        <li>
-          Submit the form. ServersUp posts a test alert to your webhook to confirm it works before saving.
-          Alerts then flow to that channel whenever the server changes status.
-        </li>
-      </ol>
-
-      <h2>Bot Commands</h2>
-      <ul>
-        <li><code>/subscribe</code>: add a subscription (Manage Channels or Administrator required)</li>
-        <li><code>/unsubscribe</code>: remove one (Manage Channels or Administrator required)</li>
-        <li><code>/subscriptions</code>: list by channel</li>
-        <li><code>/status</code>: check UP/DOWN now</li>
-        <li><code>/regions</code>, <code>/servers</code>, and <code>/games</code>: browse the catalog</li>
-        <li><code>/help</code>: explain each command and common pitfalls</li>
-      </ul>
-
-      <h2 id="games">Supported games</h2>
-      <p class="muted">Select a game and region, then search.</p>
-      <p class="games-status" data-realm-status></p>
-
-      <div class="game-browser" id="game-browser">
-        <div class="game-tabs" role="tablist" aria-label="Game catalog">
-          <button
-            type="button"
-            class="game-tab is-active"
-            data-game-tab="wow"
-            role="tab"
-            aria-selected="true"
-            aria-label="World of Warcraft"
-          >
-            <img
-              class="game-tab__logo"
-              src="../assets/wow-logo-small-transparent.png"
-              alt="World of Warcraft"
-              width="96"
-              height="40"
-              decoding="async"
-            />
-          </button>
-          <button
-            type="button"
-            class="game-tab"
-            data-game-tab="ffxiv"
-            role="tab"
-            aria-selected="false"
-            aria-label="Final Fantasy XIV"
-          >
-            <img
-              class="game-tab__logo game-tab__logo--wide"
-              src="../assets/ffxiv-logo-small-transparent.png"
-              alt="Final Fantasy XIV"
-              width="112"
-              height="40"
-              decoding="async"
-            />
-          </button>
-        </div>
-        <div class="region-row" data-region-row role="tablist" aria-label="Region"></div>
-        <div class="search-row">
-          <label class="search-field">
-            <span class="sr-only">Search your realm</span>
-            <input type="search" placeholder="Search your realm…" data-realm-search autocomplete="off" />
-          </label>
-          <span class="realm-count" data-realm-count>-</span>
-        </div>
-        <ul class="realm-list" data-realm-list aria-live="polite"></ul>
-      </div>
-
-      <h2 id="upcoming">Upcoming changes</h2>
-      <ul class="roadmap">
-        <li>
-          <strong>Planned maintenance awareness and explained downtime.</strong> Use official game notices to flag a
-          scheduled maintenance window before it starts. When a monitored server goes down, distinguish scheduled
-          maintenance from an unplanned outage when there is a matching notice, and link to the official explanation.
-        </li>
-        <li><strong>Cookie and analytics consent.</strong> Let visitors choose whether optional analytics can run.</li>
-        <li>
-          <strong>Content and discovery.</strong> Publish "How ServersUp works," complete Bing Webmaster setup, then
-          build game-specific status hubs.
-        </li>
-        <li><strong>Feedback and reports.</strong> Add a clearer way to send suggestions, bug reports, and service reports.</li>
-        <li>Subscribe and get alerts via DM, outside your Discord server</li>
-        <li>More games, including Old School RuneScape, other Blizzard titles, and popular MOBAs</li>
-        <li class="roadmap__shipped">
-          <span class="roadmap__badge">Added</span>
-          <span class="roadmap__shipped-text">Live status homepage (no Discord bot required)</span>
-          <span class="roadmap__date">2026-07-13</span>
-        </li>
-        <li class="roadmap__shipped">
-          <span class="roadmap__badge">Added</span>
-          <span class="roadmap__shipped-text">Multi-region WoW support</span>
-          <span class="roadmap__date">2026-05-26</span>
-        </li>
-        <li class="roadmap__shipped">
-          <span class="roadmap__badge">Added</span>
-          <span class="roadmap__shipped-text">Final Fantasy XIV Online support</span>
-          <span class="roadmap__date">2026-06-04</span>
-        </li>
-        <li class="roadmap__shipped">
-          <span class="roadmap__badge">Added</span>
-          <span class="roadmap__shipped-text">Cookie and analytics consent</span>
-          <span class="roadmap__date">2026-09-12</span>
-        </li>
-      </ul>
-
-      <h2 id="changelog">Changelog</h2>
-      <div class="changelog-list">
-        <details class="changelog-entry" open>
-          <summary>
-            <span>v1.5</span>
-            <span class="changelog-date">2026-08-10</span>
-          </summary>
-          <div class="changelog-body">
-            <p>
-              Subscribe to ALL servers: pick a game + region and choose <strong>ALL SERVERS</strong> in the webhook
-              form (or use <code>/subscribe</code> with a game + region in Discord) to watch an entire region at once.
-              You get one alert when every server in that region is down and one when they all come back up - no spam
-              for individual realms. Works with both webhook subscriptions and the Discord bot.
-            </p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.4</span>
-            <span class="changelog-date">2026-08-09</span>
-          </summary>
-          <div class="changelog-body">
-            <p>
-              Webhook subscriptions: get server alerts without adding the bot. Paste a Discord webhook URL, pick a
-              game, region, and server, and ServersUp posts a test alert to confirm before saving. Optional role
-              mention for pings.
-            </p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.3.1</span>
-            <span class="changelog-date">2026-07-13</span>
-          </summary>
-          <div class="changelog-body">
-            <p>
-              Website URL: live status and install docs are at
-              
-            </p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.3</span>
-            <span class="changelog-date">2026-07-13</span>
-          </summary>
-          <div class="changelog-body">
-            <p>
-              Live status on the website: check World of Warcraft and Final Fantasy XIV UP/DOWN on the homepage without
-              adding the Discord bot. Pick a game and region to browse every listed realm. The page uses the same live
-              data as Discord alerts, so both stay in sync when a realm flips.
-            </p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.2.1</span>
-            <span class="changelog-date">2026-06-19</span>
-          </summary>
-          <div class="changelog-body">
-            <p>Faster regional Battle.net polls for World of Warcraft, so UP/DOWN changes can reach Discord sooner.</p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.2</span>
-            <span class="changelog-date">2026-06-04</span>
-          </summary>
-          <div class="changelog-body">
-            <p>FFXIV support. Regions: <code>na</code>, <code>eu</code>, <code>jp</code>, <code>oce</code>. Example label: <code>ffxiv-na-gilgamesh</code>.</p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.1</span>
-            <span class="changelog-date">2026-05-26</span>
-          </summary>
-          <div class="changelog-body">
-            <p>Multi-region WoW. Required <code>region</code> on subscribe, status, and servers.</p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.0.3</span>
-            <span class="changelog-date">2026-05-15</span>
-          </summary>
-          <div class="changelog-body">
-            <p>
-              <code>/subscribe</code> and <code>/unsubscribe</code> now require you to have Manage Channels or
-              Administrator in the server.
-            </p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.0.2</span>
-            <span class="changelog-date">2026-05-15</span>
-          </summary>
-          <div class="changelog-body">
-            <p><code>/servers</code> and <code>/status</code>. Rate limits on status.</p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.0.1</span>
-            <span class="changelog-date">2026-05-13</span>
-          </summary>
-          <div class="changelog-body">
-            <p><code>/games</code> command.</p>
-          </div>
-        </details>
-        <details class="changelog-entry">
-          <summary>
-            <span>v1.0.0</span>
-            <span class="changelog-date">2026-05-07</span>
-          </summary>
-          <div class="changelog-body">
-            <p>Initial release.</p>
-          </div>
-        </details>
-      </div>
-
-      <section class="article-faq" id="faq" aria-label="Frequently asked questions">
-        <h2>FAQ</h2>
-        <details class="faq-item">
-          <summary>Is ServersUp free?</summary>
-          <p>
-            Yes. ServersUp is free forever. There is no subscription, no per-alert fee, and no signup to use the
-            <a href="/">live status board</a>.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>Do I need Discord just to check server status?</summary>
-          <p>
-            No. The <a href="/">live status board</a> shows World of Warcraft and Final Fantasy XIV realms without
-            installing anything. Discord is only needed when you want channel alerts.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>Will the bot spam my Discord channel?</summary>
-          <p>
-            No. Alerts fire only when a realm you subscribed to actually changes status. You pick the games and
-            realms, so the channel stays quiet until something you configured changes. More on
-            <a href="/blog/game-server-status-alerts-discord-without-spam/">alerts without spam</a>.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>What does subscribing to ALL servers mean?</summary>
-          <p>
-            Watching <strong>ALL servers</strong> covers every realm in a region you pick, like all US realms.
-            You get one alert when every server in that scope is down, and one when they all come back up - instead of
-            a message for each individual realm. It is a good fit for region-wide outages or maintenance.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>Which games does ServersUp support?</summary>
-          <p>
-            World of Warcraft and Final Fantasy XIV today, across the regions listed
-            <a href="#games">above</a> and on the live board. More games may be added later.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>Who can run /subscribe?</summary>
-          <p>
-            You need Manage Channels or Administrator in the Discord server to run
-            <code>/subscribe</code> and <code>/unsubscribe</code>. Anyone in the channel can still see the alerts
-            once a subscription exists.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>How is a webhook subscription different from the bot?</summary>
-          <p>
-            The bot posts alerts with the bot's name and needs permissions in your server. A webhook posts under its
-            own name, needs no bot and no permissions, and cannot run any commands. Both deliver the same alerts on
-            status changes; they are just two ways to receive them.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>Why does the form send a test alert?</summary>
-          <p>
-            Before saving, ServersUp posts one test alert to your webhook. That confirms the URL works, proves you
-            control the channel it points to, and avoids subscribing a stale or broken webhook.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>Can I subscribe to the same server on both bot and webhook?</summary>
-          <p>
-            Yes. Bot subscriptions and webhook subscriptions are separate, so you can have alerts in multiple channels
-            or use both methods at once. Each webhook can only subscribe to a given server once.
-          </p>
-        </details>
-        <details class="faq-item">
-          <summary>What if I delete the webhook after subscribing?</summary>
-          <p>
-            Alerts to a deleted webhook fail silently; ServersUp stops retrying them and no longer tries to deliver to
-            that webhook. Delete the subscription or create the webhook again if you want alerts back.
-          </p>
-        </details>
-      </section>
-
-      <div class="install-cta-after-faq">
-        <a
-          class="btn-discord"
-          href="https://discord.com/oauth2/authorize?client_id=1497867221106688181"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Add Discord bot
-        </a>
-        <button type="button" class="btn-webhook" data-webhook-open aria-controls="webhook-form">
-          Add via webhook
-        </button>
-        <p class="install-cta-after-faq__hint">Free forever. Alerts only when a realm you pick changes status.</p>
-      </div>
-
-      <section class="feedback" id="feedback" aria-label="Feedback">
-        <h2>Feedback</h2>
-        <p>
-          Have a suggestion, bug report, or question? Email me at
-          <a href="mailto:armasndev@proton.me">armasndev@proton.me</a>.
+      <section class="wrap section" id="games" aria-labelledby="games-title">
+        <h2 class="h2" id="games-title">Supported games</h2>
+        <ul class="supported">
+          <li><strong>World of Warcraft</strong><span>US, EU, KR and TW regions</span></li>
+          <li><strong>Final Fantasy XIV</strong><span>NA, EU, JP and OCE regions</span></li>
+        </ul>
+        <p class="muted" style="margin-top: 1rem">
+          See every server and its current status on the <a class="text-link" href="/server-status/">live server status page</a>.
         </p>
       </section>
 
-      <section class="support" id="support" aria-label="Support">
-        <h2>Support my work</h2>
-        <p>
-          Thanks for checking out ServersUp. I'm Armand. I build and host this in my spare time. Donations are never
-          required, but they're genuinely appreciated and go toward infrastructure costs to keep the bot and this site
-          running.
-        </p>
-        <p class="support-kofi">
-          <a href="https://ko-fi.com/R6R71Z1SRN" target="_blank" rel="noreferrer">
-            <img
-              src="https://storage.ko-fi.com/cdn/brandasset/v2/support_me_on_kofi_blue.png"
-              alt="Support me on Ko-fi"
-              height="36"
-              loading="lazy"
-              decoding="async"
-            />
-          </a>
-        </p>
+      <section class="wrap section" aria-labelledby="commands-title">
+        <h2 class="h2" id="commands-title">Bot commands</h2>
+        <ul class="commands">
+            <li><code>/subscribe</code><span>Add a subscription. Needs Manage Channels or Administrator.</span></li>
+            <li><code>/unsubscribe</code><span>Remove a subscription. Needs Manage Channels or Administrator.</span></li>
+            <li><code>/subscriptions</code><span>List subscriptions by channel.</span></li>
+            <li><code>/status</code><span>Check UP or DOWN right now.</span></li>
+            <li><code>/regions, /servers, /games</code><span>Browse the catalog of supported games, regions and servers.</span></li>
+            <li><code>/help</code><span>Explains each command and common pitfalls.</span></li>
+        </ul>
+      </section>
+
+      <section class="wrap section" id="faq" aria-labelledby="faq-title">
+        <div class="section-head">
+          <h2 class="h2" id="faq-title">FAQ</h2>
+        </div>
+        <div class="faq faq--narrow">
+            <div class="faq-item is-open">
+              <h3><button class="faq-q" type="button" aria-expanded="true" aria-controls="faq-a1" id="faq-q1"><span>Is ServersUp free?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a1"><div><p>Yes. ServersUp is free forever. There is no subscription, no per-alert fee, and no signup to use the <a href="/server-status/">live status page</a>.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2"><span>Do I need Discord just to check server status?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a2"><div><p>No. The <a href="/server-status/">live status page</a> shows World of Warcraft and Final Fantasy XIV servers without installing anything. Discord is only needed when you want channel alerts.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3"><span>Will the bot spam my Discord channel?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a3"><div><p>No. Alerts fire only when a server you subscribed to actually changes status. You pick the games and servers, so the channel stays quiet until something you configured changes. More on <a href="/blog/game-server-status-alerts-discord-without-spam/">alerts without spam</a>.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a4" id="faq-q4"><span>How many servers can I follow?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a4"><div><p>As many as you like, across as many games as you like. Follow one server or many, in one channel or several. A single webhook can subscribe to a given server once.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5"><span>How specific can I get with alerts?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a5"><div><p>As specific as a single server, or as broad as every server in a region. Watching a whole region gives you one alert when all of it is down and one when it is back. Each channel keeps its own subscriptions, so different channels can follow different servers.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a6" id="faq-q6"><span>What does subscribing to ALL servers mean?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a6"><div><p>Watching ALL servers covers every server in a region you pick, like all US servers. You get one alert when every server in that scope is down, and one when they all come back up, instead of a message for each individual server. It is a good fit for region-wide outages or maintenance.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a7" id="faq-q7"><span>Which games does ServersUp support?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a7"><div><p>World of Warcraft and Final Fantasy XIV today, across the regions listed on this page and on the live status page. More games may be added later.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a8" id="faq-q8"><span>Who can run /subscribe?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a8"><div><p>You need Manage Channels or Administrator in the Discord server to run /subscribe and /unsubscribe. Anyone in the channel can still see the alerts once a subscription exists.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a9" id="faq-q9"><span>How is a webhook subscription different from the bot?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a9"><div><p>The bot posts alerts with the bot's name and needs permissions in your server. A webhook posts under its own name, needs no bot and no permissions, and cannot run any commands. Both deliver the same alerts on status changes; they are just two ways to receive them.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a10" id="faq-q10"><span>Why does the form send a test alert?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a10"><div><p>Before saving, ServersUp posts one test alert to your webhook. That confirms the URL works, proves you control the channel it points to, and avoids subscribing a stale or broken webhook.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a11" id="faq-q11"><span>Can I subscribe to the same server on both bot and webhook?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a11"><div><p>Yes. Bot subscriptions and webhook subscriptions are separate, so you can have alerts in multiple channels or use both methods at once. Each webhook can only subscribe to a given server once.</p></div></div>
+            </div>
+            <div class="faq-item">
+              <h3><button class="faq-q" type="button" aria-expanded="false" aria-controls="faq-a12" id="faq-q12"><span>What if I delete the webhook after subscribing?</span><span class="faq-icon" aria-hidden="true"></span></button></h3>
+              <div class="faq-panel" id="faq-a12"><div><p>Alerts to a deleted webhook fail silently; ServersUp stops retrying them and no longer tries to deliver to that webhook. Delete the subscription or create the webhook again if you want alerts back.</p></div></div>
+            </div>
+        </div>
+        <div class="install-cta-after-faq">
+          <a class="btn btn-cta btn--lg" href="https://discord.com/oauth2/authorize?client_id=1497867221106688181" target="_blank" rel="noopener">Add Discord bot<span class="sr-only"> (opens in a new tab)</span></a>
+          <button type="button" class="btn btn--outline btn--lg" data-webhook-open aria-controls="webhook-form">Add via webhook</button>
+          <p class="hero__note">Free forever. Alerts only when a server you pick changes status.</p>
+        </div>
+      </section>
+
+      <section class="wrap section" aria-label="What is new and what is coming">
+        <div class="callout">
+          <div>
+            <h2 class="h3">What's new and what's coming</h2>
+            <p class="muted">See the upcoming changes and the full release history.</p>
+          </div>
+          <a class="btn btn--outline" href="/changelog/">View roadmap and changelog</a>
+        </div>
+      </section>
+
+      <section class="wrap section feedback-support" aria-label="Feedback and support">
+        <div class="callout callout--stack" id="feedback">
+          <h2 class="h3">Feedback</h2>
+          <p class="muted">
+            Have a suggestion, bug report, or question? Email me at
+            <a class="text-link" href="mailto:armasndev@proton.me">armasndev@proton.me</a>.
+          </p>
+        </div>
+        <div class="callout callout--stack" id="support">
+          <h2 class="h3">Support my work</h2>
+          <p class="muted">
+            Thanks for checking out ServersUp. I'm Armand. I build and host this in my spare time. Donations are never
+            required, but they're genuinely appreciated and go toward infrastructure costs to keep the bot and this site
+            running.
+          </p>
+          <p>
+            <a class="btn btn--outline" href="https://ko-fi.com/R6R71Z1SRN" target="_blank" rel="noopener">Support me on Ko-fi<span class="sr-only"> (opens in a new tab)</span></a>
+          </p>
+        </div>
       </section>
     </main>
 
     <footer class="site-footer">
-      <p>© <span id="year"></span> ServersUp · <a href="/">Live status</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p>
+      <div class="wrap site-footer__inner">
+        <span>&copy; <span id="year">2026</span> ServersUp</span>
+        <ul class="site-footer__links">
+          <li><a href="/server-status/">Status</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/changelog/">Roadmap &amp; Changelog</a></li>
+          <li><a href="https://ko-fi.com/R6R71Z1SRN" target="_blank" rel="noopener">Support me<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="/install/">Install guide</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+        </ul>
+      </div>
     </footer>
-
-    <script src="/data/games-data.js"></script>
-    <script src="/script.js"></script>
   </body>
 </html>
