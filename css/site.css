@@ -2879,3 +2879,7 @@ html:not(.js) .filters {
   line-height: 1.5;
 }
 
+
+.article-faq__more {
+  margin-top: 1.75rem;
+}
