@@ -421,7 +421,6 @@ ol {
 }
 
 .hero__copy .lede {
-  max-width: 30rem;
   margin-top: 1.25rem;
 }
 
@@ -544,7 +543,6 @@ ol {
 }
 
 .section-head {
-  max-width: 42rem;
 }
 
 .section-head p {
@@ -1122,7 +1120,6 @@ ol {
 }
 
 .faq-section__intro p {
-  max-width: 24rem;
   margin-top: 1rem;
   color: var(--muted);
   font-size: 1.1rem;
@@ -1258,7 +1255,6 @@ ol {
 }
 
 .cta__copy p {
-  max-width: 32rem;
   margin-top: 1rem;
   color: var(--muted);
   font-size: 1.15rem;
@@ -1579,7 +1575,6 @@ html:has(body.consent-banner-visible) {
 }
 
 .page-head .lede {
-  max-width: 40rem;
   margin-top: 1rem;
 }
 
@@ -2093,7 +2088,6 @@ html:not(.js) .status-step {
 }
 
 .install-intro {
-  max-width: 45rem;
   margin-top: 1.75rem;
   color: var(--muted);
   font-size: 1.05rem;
@@ -2209,7 +2203,6 @@ html:not(.js) .status-step {
 }
 
 .faq--narrow {
-  max-width: 51rem;
   margin-top: 1.5rem;
 }
 
