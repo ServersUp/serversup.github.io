@@ -1,32 +1,55 @@
 <!doctype html>
-<html lang="en" class="page-blog">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      (function () {
+        var t = "dark";
+        try {
+          t = localStorage.getItem("serversup-theme") || t;
+        } catch (e) {}
+        var d = document.documentElement;
+        d.setAttribute("data-theme", t === "light" ? "light" : "dark");
+        d.classList.add("js");
+      })();
+    </script>
     <script src="/analytics.js"></script>
+    <title>Game Server Maintenance &amp; Downtime Blog | ServersUp</title>
     <meta
       name="description"
-      content="ServersUp blog: game server status tips, Discord alert hygiene, and notes for gaming communities."
+      content="The Maintenance Window: how game server maintenance and downtime work, how long they last, and how players deal with them. WoW, FFXIV and more."
     />
     <link rel="canonical" href="https://serversup.app/blog/" />
-    <title>Game Server Status Blog | ServersUp</title>
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Game Server Status Blog | ServersUp" />
+    <meta property="og:site_name" content="ServersUp" />
+    <meta property="og:title" content="Game Server Maintenance &amp; Downtime Blog | ServersUp" />
     <meta
       property="og:description"
-      content="ServersUp blog: game server status tips, Discord alert hygiene, and notes for gaming communities."
+      content="The Maintenance Window: how game server maintenance and downtime work, how long they last, and how players deal with them."
     />
     <meta property="og:url" content="https://serversup.app/blog/" />
     <meta property="og:image" content="https://serversup.app/assets/serversup-logo.png" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:alt" content="ServersUp logo" />
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Game Server Status Blog | ServersUp" />
+    <meta name="twitter:title" content="Game Server Maintenance &amp; Downtime Blog | ServersUp" />
     <meta
       name="twitter:description"
-      content="ServersUp blog: game server status tips, Discord alert hygiene, and notes for gaming communities."
+      content="The Maintenance Window: how game server maintenance and downtime work, how long they last, and how players deal with them."
     />
     <meta name="twitter:image" content="https://serversup.app/assets/serversup-logo.png" />
-    <link rel="icon" href="/assets/serversup-logo.png" type="image/png" />
-    <link rel="stylesheet" href="/styles.css" />
+    <meta name="theme-color" content="#0e1117" />
+    <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/site.css" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -48,10 +71,12 @@
         },
         {
           "@type": "Blog",
-          "name": "ServersUp Blog",
+          "name": "The Maintenance Window",
           "url": "https://serversup.app/blog/",
-          "description": "Short notes on game server status and Discord alerts that stay useful.",
-          "publisher": { "@id": "https://serversup.app/#organization" },
+          "description": "How server maintenance and downtime work, and how players deal with them.",
+          "publisher": {
+            "@id": "https://serversup.app/#organization"
+          },
           "blogPost": [
             {
               "@type": "BlogPosting",
@@ -59,7 +84,9 @@
               "url": "https://serversup.app/blog/ffxiv-maintenance/",
               "datePublished": "2026-08-09",
               "image": "https://serversup.app/assets/serversup-logo.png",
-              "author": { "@id": "https://serversup.app/#organization" }
+              "author": {
+                "@id": "https://serversup.app/#organization"
+              }
             },
             {
               "@type": "BlogPosting",
@@ -67,7 +94,9 @@
               "url": "https://serversup.app/blog/is-wow-down/",
               "datePublished": "2026-07-26",
               "image": "https://serversup.app/assets/serversup-logo.png",
-              "author": { "@id": "https://serversup.app/#organization" }
+              "author": {
+                "@id": "https://serversup.app/#organization"
+              }
             },
             {
               "@type": "BlogPosting",
@@ -75,122 +104,134 @@
               "url": "https://serversup.app/blog/game-server-status-alerts-discord-without-spam/",
               "datePublished": "2026-07-19",
               "image": "https://serversup.app/assets/discord-alert-example.png",
-              "author": { "@id": "https://serversup.app/#organization" }
-            }
-          ]
-        },
-        {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Status",
-              "item": "https://serversup.app/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Blog",
-              "item": "https://serversup.app/blog/"
+              "author": {
+                "@id": "https://serversup.app/#organization"
+              }
             }
           ]
         }
       ]
     }
     </script>
+    <script src="/js/site.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#blog">Skip to posts</a>
 
     <header class="site-header">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="/">
-          <img src="/assets/serversup-logo.png" alt="" width="24" height="24" decoding="async" />
-          <span>ServersUp</span>
-        </a>
-        <div class="nav-links">
-          <a class="nav-link" href="/">Status</a>
-          <a class="nav-link is-current" href="/blog/" aria-current="page">Blog</a>
-          <a class="btn-cta btn-cta--sm" href="/install/">Get Discord alerts</a>
-        </div>
-      </nav>
+      <div class="wrap">
+        <nav class="nav" aria-label="Primary">
+          <a class="brand" href="/">
+            <span class="brand__mark"><img src="/assets/serversup-logo-128.png" alt="" width="32" height="32" decoding="async" /></span>
+            <span>ServersUp</span>
+          </a>
+          <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+          </button>
+          <div class="nav-links" id="nav-links">
+            <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="true">
+              <span class="theme-toggle__track">
+                <span class="theme-toggle__knob"></span>
+                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 019.5 4 8.5 8.5 0 1020 14.5z" /></svg>
+              </span>
+            </button>
+            <a class="nav-link" href="/server-status/">Status</a>
+            <a class="nav-link" href="/blog/" aria-current="page">Blog</a>
+            <a class="nav-link" href="/changelog/">Roadmap &amp; Changelog</a>
+            <a class="nav-link" href="https://ko-fi.com/R6R71Z1SRN" target="_blank" rel="noopener">Support me<span class="sr-only"> (opens in a new tab)</span></a>
+            <a class="btn btn-cta btn--sm" href="/install/">Add to Discord</a>
+          </div>
+        </nav>
+      </div>
     </header>
 
-    <main class="doc" id="blog">
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <ol>
-          <li><a href="/">Status</a></li>
-          <li aria-current="page">Blog</li>
-        </ol>
-      </nav>
+    <main id="blog">
+      <div class="wrap page-head">
+        <p class="eyebrow">ServersUp blog</p>
+        <h1 class="h1">The Maintenance Window</h1>
+        <p class="lede">How server maintenance and downtime work, and how players deal with them.</p>
+        <div class="filters" role="group" aria-label="Filter posts by topic">
+          <button type="button" class="chip-btn" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="chip-btn" data-filter="FFXIV" aria-pressed="false">FFXIV</button>
+          <button type="button" class="chip-btn" data-filter="WoW" aria-pressed="false">WoW</button>
+          <button type="button" class="chip-btn" data-filter="Alerting" aria-pressed="false">Alerting</button>
+        </div>
+      </div>
 
-      <header class="blog-index-header">
+      <div class="wrap">
         <!--
           SHIP GATE - every new post under blog/<slug>/index.html MUST also appear in
           Blog.blogPost[] in the JSON-LD <script> above (headline, url, datePublished, image, author).
           Updating the HTML list alone is NOT enough. Fail the publish if blogPost[] is stale.
           Verify: python3 .cursor/skills/seo-aeo/scripts/check_blog_blogpost_sync.py
         -->
-        <p class="eyebrow">ServersUp blog</p>
-        <h1>Game server status, without the noise</h1>
-        <p class="lead">
-          Short, practical notes on game server status and keeping Discord alerts useful.
-        </p>
-      </header>
-
-      <ul class="blog-list">
-        <li>
-          <a class="blog-list__link" href="/blog/ffxiv-maintenance/">
-            <span class="blog-list__meta">
-              <span class="blog-tag">FFXIV</span>
+        <p class="sr-only" role="status" data-filter-status></p>
+        <ul class="post-list" data-post-list>
+        <li data-tag="FFXIV">
+          <a class="post-row" href="/blog/ffxiv-maintenance/" aria-labelledby="pt-ffxiv-maintenance" aria-describedby="pe-ffxiv-maintenance">
+            <span class="post-row__meta">
+              <span class="tag">FFXIV</span>
               <time datetime="2026-08-09">August 9, 2026</time>
             </span>
-            <span class="blog-list__title"
-              >FFXIV Maintenance (FF14): How Long &amp; Is It Down?</span
-            >
-            <span class="blog-list__excerpt">
-              FFXIV maintenance windows, how long they last, and how to check your world across NA, EU,
-              JP and OCE.
+            <span class="post-row__body">
+              <h2 class="post-row__title" id="pt-ffxiv-maintenance">FFXIV Maintenance (FF14): How Long Are Servers Down?</h2>
+              <span class="post-row__excerpt" id="pe-ffxiv-maintenance">FFXIV maintenance windows, how long they last, and how to check your world across NA, EU, JP and OCE.</span>
+              <span class="post-row__more">Read post <span aria-hidden="true">&rarr;</span></span>
             </span>
-            <span class="blog-list__more">Read post →</span>
           </a>
         </li>
-        <li>
-          <a class="blog-list__link" href="/blog/is-wow-down/">
-            <span class="blog-list__meta">
-              <span class="blog-tag">WoW</span>
+        <li data-tag="WoW">
+          <a class="post-row" href="/blog/is-wow-down/" aria-labelledby="pt-is-wow-down" aria-describedby="pe-is-wow-down">
+            <span class="post-row__meta">
+              <span class="tag">WoW</span>
               <time datetime="2026-07-26">July 26, 2026</time>
             </span>
-            <span class="blog-list__title"
-              >Is WoW Down? Patch Day, Great Vault &amp; Server Maintenance</span
-            >
-            <span class="blog-list__excerpt">
-              Patch day queues, Great Vault on Tuesday (Wednesday for EU folk), and server maintenance: live
-              realm status plus quiet Discord alerts when your realm comes back.
+            <span class="post-row__body">
+              <h2 class="post-row__title" id="pt-is-wow-down">Is WoW Down? Patch Day, Great Vault &amp; Server Maintenance</h2>
+              <span class="post-row__excerpt" id="pe-is-wow-down">Patch day queues, Great Vault on Tuesday (Wednesday for EU folk), and server maintenance: live realm status plus quiet Discord alerts when your realm comes back.</span>
+              <span class="post-row__more">Read post <span aria-hidden="true">&rarr;</span></span>
             </span>
-            <span class="blog-list__more">Read post →</span>
           </a>
         </li>
-        <li>
-          <a class="blog-list__link" href="/blog/game-server-status-alerts-discord-without-spam/">
-            <span class="blog-list__meta">
-              <span class="blog-tag">Alerting</span>
+        <li data-tag="Alerting">
+          <a class="post-row" href="/blog/game-server-status-alerts-discord-without-spam/" aria-labelledby="pt-game-server-status-alerts-discord-without-spam" aria-describedby="pe-game-server-status-alerts-discord-without-spam">
+            <span class="post-row__meta">
+              <span class="tag">Alerting</span>
               <time datetime="2026-07-19">July 19, 2026</time>
             </span>
-            <span class="blog-list__title">Game Server Status Alerts in Discord Without Spam</span>
-            <span class="blog-list__excerpt">
-              Why communities mute noisy status bots, and how pick-and-choose alerts keep channels useful.
+            <span class="post-row__body">
+              <h2 class="post-row__title" id="pt-game-server-status-alerts-discord-without-spam">Game Server Status Alerts in Discord Without Spam</h2>
+              <span class="post-row__excerpt" id="pe-game-server-status-alerts-discord-without-spam">Why communities mute noisy status bots, and how pick-and-choose alerts keep channels useful.</span>
+              <span class="post-row__more">Read post <span aria-hidden="true">&rarr;</span></span>
             </span>
-            <span class="blog-list__more">Read post →</span>
           </a>
         </li>
-      </ul>
+        </ul>
+
+        <section class="callout blog-cta" aria-labelledby="blog-cta-title">
+          <div>
+            <h2 class="h3" id="blog-cta-title">Tired of refreshing status pages?</h2>
+            <p class="muted">Get a free Discord alert when a server you watch goes up or down.</p>
+          </div>
+          <a class="btn btn-cta" href="/install/">Get Discord alerts</a>
+        </section>
+      </div>
     </main>
 
     <footer class="site-footer">
-      <p>© <span id="year"></span> ServersUp · <a href="/install/">Get Discord alerts</a> · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a></p>
+      <div class="wrap site-footer__inner">
+        <span>&copy; <span id="year">2026</span> ServersUp</span>
+        <ul class="site-footer__links">
+          <li><a href="/server-status/">Status</a></li>
+          <li><a href="/blog/">Blog</a></li>
+          <li><a href="/changelog/">Roadmap &amp; Changelog</a></li>
+          <li><a href="https://ko-fi.com/R6R71Z1SRN" target="_blank" rel="noopener">Support me<span class="sr-only"> (opens in a new tab)</span></a></li>
+          <li><a href="/install/">Install guide</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/terms/">Terms</a></li>
+        </ul>
+      </div>
     </footer>
-    <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
   </body>
 </html>

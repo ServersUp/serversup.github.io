@@ -17,10 +17,12 @@ Canonical for indexing and links remains **`https://serversup.app`**.
 
 ### Stack
 
-- Self-contained CSS + vanilla JS
-- Live status on `/` via same-origin `/status/latest.json`
-- Install/docs on `/install/`
-- Blog on `/blog/`
+- Self-contained CSS (`css/site.css`) + vanilla JS (`js/site.js` shared; `status.js`, `script.js`, `analytics.js` per page)
+- Home on `/`; live status board on `/server-status/` (the CDN reserves `/status/*` for the S3 snapshot, so the page cannot live at `/status/`), reading same-origin `/status/latest.json`
+- Install guide and webhook form on `/install/`
+- Roadmap and changelog on `/changelog/`
+- Blog on `/blog/`; privacy and terms on `/privacy/` and `/terms/`
+- Dark theme by default with a light/dark toggle (stored in `localStorage` as `serversup-theme`)
 
 ### Local preview
 
