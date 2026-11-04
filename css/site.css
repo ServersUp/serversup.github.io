@@ -1958,8 +1958,38 @@ code {
 }
 
 .roadmap li {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
   padding: 1.1rem 0;
   border-bottom: 1px solid var(--line);
+}
+
+.roadmap__icon {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.roadmap__icon--game {
+  background: none;
+}
+
+.roadmap__icon img {
+  display: block;
+  width: 2.5rem;
+  height: auto;
+}
+
+.roadmap__icon svg {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .roadmap strong {
