@@ -104,6 +104,7 @@ function setupStatusPage() {
   const searchInput = document.querySelector("[data-status-search]");
   const loadingEl = document.querySelector("[data-status-loading]");
   const errorEl = document.querySelector("[data-status-error]");
+  const announceEl = document.querySelector("[data-status-announce]");
   const gameBtns = document.querySelectorAll("[data-pick-game]");
 
   if (
@@ -124,6 +125,17 @@ function setupStatusPage() {
   let region = null;
   let query = "";
   let fetchInFlight = null;
+  let selectSeq = 0;
+  let lastGame = null;
+  let lastRegionPref = null;
+  let lastRenderKey = "";
+  let lastAnnounce = "";
+
+  function announce(text) {
+    if (!(announceEl instanceof HTMLElement) || text === lastAnnounce) return;
+    lastAnnounce = text;
+    announceEl.textContent = text;
+  }
 
   function setSub(text) {
     if (subEl instanceof HTMLElement) subEl.textContent = text;
@@ -135,7 +147,7 @@ function setupStatusPage() {
       const id = btn.getAttribute("data-pick-game");
       const active = id === gameId;
       btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
     }
   }
 
@@ -213,6 +225,7 @@ function setupStatusPage() {
   }
 
   function renderIdle() {
+    lastRenderKey = "";
     searchInput.disabled = true;
     searchInput.value = "";
     query = "";
@@ -225,21 +238,31 @@ function setupStatusPage() {
     const filtered = sortServers(
       servers.filter((s) => {
         if (!query) return true;
-        const slug = String(s.slug || "").toLowerCase();
-        const label = String(s.label || "").toLowerCase();
-        return slug.includes(query) || label.includes(query);
+        return String(s.slug || "").toLowerCase().includes(query);
       }),
     );
 
     searchInput.disabled = false;
 
+    const key =
+      `${gameId}|${region}|${query}|${snapshot?.generatedAt || 0}|${Math.floor(Date.now() / 60000)}|` +
+      filtered.map((x) => `${x.slug}:${normalizeStatus(x.status)}:${x.lastUpdatedAt || 0}`).join(",");
+    if (key === lastRenderKey) return;
+    lastRenderKey = key;
+
     totalsEl.replaceChildren();
     const c = countStatuses(filtered);
     totalsEl.appendChild(makeStat("stat--up", "UP", c.up));
     totalsEl.appendChild(makeStat("stat--down", "DOWN", c.down));
-    if (c.unknown > 0) totalsEl.appendChild(makeStat("stat--unknown", "UNK", c.unknown));
+    if (c.unknown > 0) totalsEl.appendChild(makeStat("stat--unknown", "UNKNOWN", c.unknown));
 
     renderMeta(servers);
+    if (!query) {
+      const regionLabel = GAME_META[gameId]?.regionLabels?.[region] || String(region).toUpperCase();
+      const parts = [`${c.up} up`, `${c.down} down`];
+      if (c.unknown > 0) parts.push(`${c.unknown} unknown`);
+      announce(`${GAME_META[gameId]?.short || gameId} ${regionLabel}: ${parts.join(", ")}`);
+    }
 
     gridEl.replaceChildren();
     if (filtered.length === 0) {
@@ -251,7 +274,6 @@ function setupStatusPage() {
   }
 
   function renderRegions() {
-    regionsEl.replaceChildren();
     if (!gameId || !snapshot) {
       regionsEl.hidden = true;
       return;
@@ -261,16 +283,27 @@ function setupStatusPage() {
     const regions = snapshot.games?.[gameId]?.regions || {};
     const keys = (meta?.regionOrder || Object.keys(regions)).filter((k) => regions[k]);
 
+    const existing = Array.from(regionsEl.querySelectorAll("[data-pick-region]"));
+    if (existing.length === keys.length && existing.every((b, i) => b.getAttribute("data-pick-region") === keys[i])) {
+      for (const b of existing) {
+        const active = b.getAttribute("data-pick-region") === region;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-pressed", active ? "true" : "false");
+      }
+      regionsEl.hidden = false;
+      return;
+    }
+
+    regionsEl.replaceChildren();
     for (const key of keys) {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "status-pick__region";
-      btn.setAttribute("role", "tab");
       btn.setAttribute("data-pick-region", key);
       btn.textContent = meta?.regionLabels?.[key] || key.toUpperCase();
       const active = key === region;
       btn.classList.toggle("is-active", active);
-      btn.setAttribute("aria-selected", active ? "true" : "false");
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
       btn.addEventListener("click", () => selectRegion(key, true));
       regionsEl.appendChild(btn);
     }
@@ -281,6 +314,8 @@ function setupStatusPage() {
   function selectRegion(key, fromUser) {
     if (!gameId) return;
     region = key;
+    lastRegionPref = key;
+    lastRenderKey = "";
     query = "";
     searchInput.value = "";
     if (fromUser) {
@@ -299,6 +334,8 @@ function setupStatusPage() {
       window.ServersUpAnalytics?.track("status_game_selected", { game: id });
     }
 
+    const seq = ++selectSeq;
+    lastGame = id;
     gameId = id;
     region = null;
     setGameButtons();
@@ -308,10 +345,12 @@ function setupStatusPage() {
     showPlaceholder(`Select a ${GAME_META[id].short} region to view servers.`);
 
     if (!snapshot) {
+      setSub(`Loading ${GAME_META[id].short} statuses...`);
       loadingEl.hidden = false;
       renderSkeletonRows(12);
       regionsEl.hidden = true;
       await fetchSnapshot(false);
+      if (seq !== selectSeq) return;
       loadingEl.hidden = true;
       if (!snapshot) {
         gameId = null;
@@ -332,6 +371,11 @@ function setupStatusPage() {
 
     renderRegions();
     showPlaceholder(`Select a ${GAME_META[id].short} region to view servers.`);
+
+    const available = Object.keys(snapshot.games[id].regions || {});
+    const order = GAME_META[id].regionOrder.filter((k) => available.includes(k));
+    const preferred = available.includes(lastRegionPref) ? lastRegionPref : order[0] || available[0];
+    if (preferred) selectRegion(preferred, false);
   }
 
   async function fetchSnapshot() {
@@ -384,14 +428,22 @@ function setupStatusPage() {
     if (gameId && region) renderResults();
   });
 
+  function refresh() {
+    if (!snapshot) {
+      // A failed first load: keep retrying instead of leaving the board empty.
+      if (!fetchInFlight) selectGame(lastGame || "wow", false);
+      return;
+    }
+    if (gameId) fetchSnapshot();
+  }
+
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible" && gameId) fetchSnapshot();
+    if (document.visibilityState === "visible") refresh();
   });
 
   window.setInterval(() => {
     if (document.visibilityState === "hidden") return;
-    if (!gameId) return;
-    fetchSnapshot();
+    refresh();
   }, STATUS_POLL_MS);
 
   setSub("Choose a game, then a region.");
@@ -399,6 +451,9 @@ function setupStatusPage() {
   loadingEl.hidden = true;
   errorEl.hidden = true;
   renderIdle();
+
+  // Preselect the first game (and its first region) so the board shows data right away.
+  selectGame("wow", false);
 }
 
 setYear();
