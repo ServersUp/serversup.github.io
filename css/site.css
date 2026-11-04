@@ -2603,6 +2603,7 @@ html:not(.js) .filters {
 
 .post-row__title {
   display: block;
+  margin: 0;
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.2;
@@ -2783,7 +2784,7 @@ html:not(.js) .filters {
 
 .related__list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(18rem, 100%), 1fr));
   gap: 1rem;
   margin: 1.25rem 0 0;
   padding: 0;
@@ -2844,4 +2845,29 @@ html:not(.js) .filters {
 .legal .prose h2 {
   margin-top: 2.5rem;
   font-size: 1.5rem;
+}
+
+.prose figure,
+.article-figure {
+  margin: 1.75rem 0;
+}
+
+.prose figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.prose figcaption {
+  margin-top: 0.6rem;
+  color: var(--dim);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.breadcrumbs a {
+  display: inline-block;
+  padding-block: 0.4rem;
 }

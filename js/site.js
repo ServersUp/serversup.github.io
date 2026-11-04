@@ -113,9 +113,13 @@
         chips.forEach(function (c) {
           c.setAttribute("aria-pressed", c === chip ? "true" : "false");
         });
+        var shown = 0;
         list.querySelectorAll("[data-tag]").forEach(function (li) {
           li.hidden = tag !== "all" && li.getAttribute("data-tag") !== tag;
+          if (!li.hidden) shown += 1;
         });
+        var status = document.querySelector("[data-filter-status]");
+        if (status) status.textContent = "Showing " + shown + (shown === 1 ? " post" : " posts");
       });
     });
   }
