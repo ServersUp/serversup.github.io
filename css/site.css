@@ -1079,13 +1079,36 @@ ol {
   list-style: none;
 }
 
-.games__regions li {
-  padding: 0.25rem 0.65rem;
+.games__regions a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0 0.9rem;
   border: 1px solid var(--line);
   border-radius: 6px;
   color: var(--accent);
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  text-decoration: none;
+}
+
+.games__regions a:hover {
+  border-color: var(--accent);
+  background: var(--card);
+}
+
+.games__actions {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  min-width: 15rem;
+}
+
+.games__actions .games__link {
+  min-width: 0;
+  padding-block: 0.25rem;
 }
 
 .games__link {
@@ -1497,6 +1520,11 @@ html:has(body.consent-banner-visible) {
   .games__link {
     min-width: 0;
     text-align: left;
+  }
+
+  .games__actions {
+    align-items: flex-start;
+    min-width: 0;
   }
 
   .games__name {

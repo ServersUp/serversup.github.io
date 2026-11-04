@@ -452,8 +452,13 @@ function setupStatusPage() {
   errorEl.hidden = true;
   renderIdle();
 
-  // Preselect the first game (and its first region) so the board shows data right away.
-  selectGame("wow", false);
+  // Preselect a game and region (from ?game= and ?region=, else WoW and its first region)
+  // so the board shows data right away and links can deep-link into it.
+  const params = new URLSearchParams(window.location.search);
+  const wantGame = (params.get("game") || "").toLowerCase();
+  const wantRegion = (params.get("region") || "").toLowerCase();
+  if (wantRegion) lastRegionPref = wantRegion;
+  selectGame(GAME_META[wantGame] ? wantGame : "wow", false);
 }
 
 setYear();
