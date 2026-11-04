@@ -2240,6 +2240,7 @@ html:not(.js) .status-step {
 
 .feedback-support {
   display: flex;
+  padding-bottom: 5rem;
   flex-wrap: wrap;
   gap: 1rem;
 }
