@@ -333,6 +333,18 @@ ol {
   border-color: var(--accent);
 }
 
+/* Secondary actions (see all questions, full install guide, allow analytics).
+   The solid teal .btn-cta stays reserved for the install call to action. */
+.btn--secondary {
+  border-color: var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.btn--secondary:hover {
+  background: var(--card);
+}
+
 .btn--sm {
   padding: 0.55rem 0.9rem;
   font-size: 0.9rem;
@@ -382,8 +394,6 @@ ol {
 }
 
 .text-link {
-  display: inline-block;
-  padding-block: 0.6rem;
   color: var(--accent);
   font-weight: 600;
   text-decoration: underline;
@@ -588,9 +598,14 @@ ol {
   background: var(--surface);
 }
 
-@media (min-width: 1200px) and (prefers-reduced-motion: no-preference) {
+@media (min-width: 1240px) and (prefers-reduced-motion: no-preference) {
   .hiw-stage-wrap {
     display: block;
+    width: 1164px;
+    max-width: none;
+    margin-left: 50%;
+    padding-inline: 32px;
+    transform: translateX(-50%);
   }
 
   .hiw-list {
@@ -1390,9 +1405,13 @@ html:has(body.consent-banner-visible) {
 }
 
 .analytics-consent .analytics-consent__accept {
-  border: 1px solid transparent;
-  background: var(--brand);
-  color: var(--on-brand);
+  border: 1px solid var(--accent);
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.analytics-consent .analytics-consent__accept:hover {
+  background: var(--bg);
 }
 
 .analytics-consent__reject,
