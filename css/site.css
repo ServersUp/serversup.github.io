@@ -2232,12 +2232,17 @@ html:not(.js) .status-step {
 .webhook-modal {
   width: min(40rem, calc(100vw - 2rem));
   max-height: calc(100vh - 2rem);
-  padding: 1.5rem;
+  max-height: calc(100dvh - 2rem);
+  padding: 0;
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--card);
   color: var(--text);
+}
+
+.webhook-modal__inner {
+  padding: 1.5rem;
 }
 
 .webhook-modal::backdrop {
@@ -2439,7 +2444,6 @@ html:not(.js) .status-step {
 .wh-server-item__hint {
   color: inherit;
   font-size: 0.8rem;
-  opacity: 0.85;
 }
 
 .wh-server-list__empty,
@@ -2487,4 +2491,353 @@ html:not(.js) .status-step {
 .webhook-form .btn {
   width: 100%;
   margin-top: 0.5rem;
+}
+
+.supported {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2.5rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.supported li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.supported span {
+  color: var(--muted);
+}
+
+/* -- Blog -- */
+
+.tag {
+  display: inline-block;
+  margin: 0;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+html:not(.js) .filters {
+  display: none;
+}
+
+.chip-btn {
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border: 1px solid var(--control);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chip-btn:hover {
+  border-color: var(--accent);
+}
+
+.chip-btn[aria-pressed="true"] {
+  border-color: var(--brand);
+  background: var(--brand);
+  color: var(--on-brand);
+}
+
+.post-list {
+  margin: 1.75rem 0 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.post-list li {
+  border-bottom: 1px solid var(--line);
+}
+
+.post-list li[hidden] {
+  display: none;
+}
+
+.post-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 2.5rem;
+  padding: 2rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-row__meta {
+  display: flex;
+  flex: 0 0 11rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.post-row__meta time {
+  color: var(--dim);
+  font-size: 0.95rem;
+}
+
+.post-row__body {
+  flex: 1 1 22rem;
+  min-width: 0;
+}
+
+.post-row__title {
+  display: block;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.post-row:hover .post-row__title {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.post-row__excerpt {
+  display: block;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.55;
+}
+
+.post-row__more {
+  display: inline-block;
+  margin-top: 0.9rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.blog-cta {
+  margin-top: 4rem;
+  margin-bottom: 5rem;
+}
+
+.article {
+  max-width: 50rem;
+  padding-block: 3.5rem 5.5rem;
+}
+
+.article__head {
+  margin-bottom: 2.25rem;
+}
+
+.article__head .h1 {
+  margin-top: 1.1rem;
+}
+
+.article__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.6rem;
+  margin-top: 1.1rem;
+  color: var(--dim);
+  font-size: 0.95rem;
+}
+
+.prose {
+  font-size: 1.125rem;
+  line-height: 1.75;
+}
+
+.prose p {
+  margin-top: 1.1rem;
+}
+
+.prose h2 {
+  margin-top: 3rem;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.prose h3 {
+  margin-top: 2rem;
+  font-size: 1.3rem;
+}
+
+.prose ul,
+.prose ol {
+  margin: 1.1rem 0 0;
+  padding-left: 1.5rem;
+}
+
+.prose li + li {
+  margin-top: 0.4rem;
+}
+
+.prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose .article__lead {
+  margin-top: 0;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+.prose .article__aside {
+  margin-top: 1.75rem;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--brand);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: var(--surface);
+  color: var(--muted);
+}
+
+.prose table {
+  width: 100%;
+  margin-top: 1.5rem;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.prose th,
+.prose td {
+  padding: 0.65rem 0.8rem;
+  border: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background: var(--surface);
+}
+
+.article-faq {
+  margin-top: 3.5rem;
+}
+
+.article-faq h2 {
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+}
+
+.article-faq .faq {
+  margin-top: 1.25rem;
+}
+
+.article-faq .faq-q {
+  font-size: 1.1rem;
+}
+
+.article-faq .faq-panel a {
+  color: var(--accent);
+}
+
+.article-cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem 2rem;
+  margin-top: 3.5rem;
+  padding: 1.75rem 2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.article-cta__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.article-cta__hint {
+  margin: 0.4rem 0 0;
+  color: var(--muted);
+}
+
+.related {
+  margin-top: 4.5rem;
+}
+
+.related h2 {
+  font-size: 1.4rem;
+}
+
+.related__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.related__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  color: inherit;
+  text-decoration: none;
+}
+
+.related__link:hover {
+  border-color: var(--accent);
+}
+
+.related__link .tag {
+  align-self: flex-start;
+  font-size: 0.9rem;
+}
+
+.related__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.related__date {
+  color: var(--dim);
+  font-size: 0.9rem;
+}
+
+/* -- Legal pages -- */
+
+.legal {
+  max-width: 50rem;
+  padding-block: 3.5rem 5rem;
+}
+
+.legal .h1 {
+  margin-bottom: 0.75rem;
+}
+
+.legal-updated {
+  color: var(--dim);
+}
+
+.legal .prose h2 {
+  margin-top: 2.5rem;
+  font-size: 1.5rem;
 }

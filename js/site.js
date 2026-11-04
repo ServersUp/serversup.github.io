@@ -103,6 +103,23 @@
     }
   }
 
+  function setupPostFilter() {
+    var chips = document.querySelectorAll("[data-filter]");
+    var list = document.querySelector("[data-post-list]");
+    if (!chips.length || !list) return;
+    chips.forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var tag = chip.getAttribute("data-filter");
+        chips.forEach(function (c) {
+          c.setAttribute("aria-pressed", c === chip ? "true" : "false");
+        });
+        list.querySelectorAll("[data-tag]").forEach(function (li) {
+          li.hidden = tag !== "all" && li.getAttribute("data-tag") !== tag;
+        });
+      });
+    });
+  }
+
   function setYear() {
     var el = document.getElementById("year");
     if (el) el.textContent = String(new Date().getFullYear());
@@ -112,5 +129,6 @@
   setupMobileNav();
   setupFaq();
   setupStagePause();
+  setupPostFilter();
   setYear();
 })();
