@@ -1606,34 +1606,6 @@ html:has(body.consent-banner-visible) {
   margin-top: 1rem;
 }
 
-.breadcrumbs ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.35rem;
-  margin: 0 0 1.5rem;
-  padding: 0;
-  color: var(--dim);
-  font-size: 0.9rem;
-  list-style: none;
-}
-
-.breadcrumbs li + li::before {
-  content: "/";
-  margin-right: 0.35rem;
-}
-
-.breadcrumbs a {
-  color: var(--dim);
-}
-
-.breadcrumbs a:hover {
-  color: var(--text);
-}
-
-.breadcrumbs [aria-current="page"] {
-  color: var(--muted);
-}
-
 code {
   padding: 0.05rem 0.4rem;
   border: 1px solid var(--line);
@@ -2907,7 +2879,3 @@ html:not(.js) .filters {
   line-height: 1.5;
 }
 
-.breadcrumbs a {
-  display: inline-block;
-  padding-block: 0.4rem;
-}

@@ -60,17 +60,12 @@
           "url": "https://serversup.app/server-status/",
           "name": "Live Game Server Status",
           "description": "Live game server status for every supported game, region and server.",
-          "isPartOf": { "@id": "https://serversup.app/#website" },
-          "publisher": { "@id": "https://serversup.app/#organization" },
-          "breadcrumb": { "@id": "https://serversup.app/server-status/#breadcrumb" }
-        },
-        {
-          "@type": "BreadcrumbList",
-          "@id": "https://serversup.app/server-status/#breadcrumb",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://serversup.app/" },
-            { "@type": "ListItem", "position": 2, "name": "Server status", "item": "https://serversup.app/server-status/" }
-          ]
+          "isPartOf": {
+            "@id": "https://serversup.app/#website"
+          },
+          "publisher": {
+            "@id": "https://serversup.app/#organization"
+          }
         }
       ]
     }
@@ -111,12 +106,6 @@
 
     <main id="main">
       <section class="wrap page-head" aria-labelledby="status-title">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <ol>
-            <li><a href="/">Home</a></li>
-            <li aria-current="page">Server status</li>
-          </ol>
-        </nav>
         <h1 class="h1" id="status-title">Live game server status</h1>
         <p class="lede">
           Check your game's servers without refreshing official status pages.

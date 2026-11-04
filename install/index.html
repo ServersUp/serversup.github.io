@@ -91,7 +91,9 @@
             "price": "0",
             "priceCurrency": "USD"
           },
-          "publisher": { "@id": "https://serversup.app/#organization" }
+          "publisher": {
+            "@id": "https://serversup.app/#organization"
+          }
         },
         {
           "@type": "HowTo",
@@ -119,112 +121,105 @@
             }
           ]
         },
-          {
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "Is ServersUp free?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. ServersUp is free forever. There is no subscription, no per-alert fee, and no signup to use the live status page."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Do I need Discord just to check server status?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No. The live status page shows World of Warcraft and Final Fantasy XIV servers without installing anything. Discord is only needed when you want channel alerts."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Will the bot spam my Discord channel?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "No. Alerts fire only when a server you subscribed to actually changes status. You pick the games and servers, so the channel stays quiet until something you configured changes. More on alerts without spam."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How many servers can I follow?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "As many as you like, across as many games as you like. Follow one server or many, in one channel or several. A single webhook can subscribe to a given server once."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How specific can I get with alerts?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "As specific as a single server, or as broad as every server in a region. Watching a whole region gives you one alert when all of it is down and one when it is back. Each channel keeps its own subscriptions, so different channels can follow different servers."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What does subscribing to ALL servers mean?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Watching ALL servers covers every server in a region you pick, like all US servers. You get one alert when every server in that scope is down, and one when they all come back up, instead of a message for each individual server. It is a good fit for region-wide outages or maintenance."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Which games does ServersUp support?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "World of Warcraft and Final Fantasy XIV today, across the regions listed on this page and on the live status page. More games may be added later."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Who can run /subscribe?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "You need Manage Channels or Administrator in the Discord server to run /subscribe and /unsubscribe. Anyone in the channel can still see the alerts once a subscription exists."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "How is a webhook subscription different from the bot?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "The bot posts alerts with the bot's name and needs permissions in your server. A webhook posts under its own name, needs no bot and no permissions, and cannot run any commands. Both deliver the same alerts on status changes; they are just two ways to receive them."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Why does the form send a test alert?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Before saving, ServersUp posts one test alert to your webhook. That confirms the URL works, proves you control the channel it points to, and avoids subscribing a stale or broken webhook."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "Can I subscribe to the same server on both bot and webhook?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Yes. Bot subscriptions and webhook subscriptions are separate, so you can have alerts in multiple channels or use both methods at once. Each webhook can only subscribe to a given server once."
-                }
-              },
-              {
-                "@type": "Question",
-                "name": "What if I delete the webhook after subscribing?",
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": "Alerts to a deleted webhook fail silently; ServersUp stops retrying them and no longer tries to deliver to that webhook. Delete the subscription or create the webhook again if you want alerts back."
-                }
-              }
-            ]
-          },
         {
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://serversup.app/" },
-            { "@type": "ListItem", "position": 2, "name": "Install", "item": "https://serversup.app/install/" }
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Is ServersUp free?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. ServersUp is free forever. There is no subscription, no per-alert fee, and no signup to use the live status page."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need Discord just to check server status?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. The live status page shows World of Warcraft and Final Fantasy XIV servers without installing anything. Discord is only needed when you want channel alerts."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Will the bot spam my Discord channel?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Alerts fire only when a server you subscribed to actually changes status. You pick the games and servers, so the channel stays quiet until something you configured changes. More on alerts without spam."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How many servers can I follow?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "As many as you like, across as many games as you like. Follow one server or many, in one channel or several. A single webhook can subscribe to a given server once."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How specific can I get with alerts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "As specific as a single server, or as broad as every server in a region. Watching a whole region gives you one alert when all of it is down and one when it is back. Each channel keeps its own subscriptions, so different channels can follow different servers."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What does subscribing to ALL servers mean?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Watching ALL servers covers every server in a region you pick, like all US servers. You get one alert when every server in that scope is down, and one when they all come back up, instead of a message for each individual server. It is a good fit for region-wide outages or maintenance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Which games does ServersUp support?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "World of Warcraft and Final Fantasy XIV today, across the regions listed on this page and on the live status page. More games may be added later."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Who can run /subscribe?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You need Manage Channels or Administrator in the Discord server to run /subscribe and /unsubscribe. Anyone in the channel can still see the alerts once a subscription exists."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How is a webhook subscription different from the bot?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The bot posts alerts with the bot's name and needs permissions in your server. A webhook posts under its own name, needs no bot and no permissions, and cannot run any commands. Both deliver the same alerts on status changes; they are just two ways to receive them."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Why does the form send a test alert?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Before saving, ServersUp posts one test alert to your webhook. That confirms the URL works, proves you control the channel it points to, and avoids subscribing a stale or broken webhook."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I subscribe to the same server on both bot and webhook?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Bot subscriptions and webhook subscriptions are separate, so you can have alerts in multiple channels or use both methods at once. Each webhook can only subscribe to a given server once."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What if I delete the webhook after subscribing?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Alerts to a deleted webhook fail silently; ServersUp stops retrying them and no longer tries to deliver to that webhook. Delete the subscription or create the webhook again if you want alerts back."
+              }
+            }
           ]
         }
       ]
@@ -267,12 +262,6 @@
 
     <main id="main">
       <section class="wrap page-head install-hero" id="about" aria-labelledby="install-title">
-        <nav class="breadcrumbs" aria-label="Breadcrumb">
-          <ol>
-            <li><a href="/">Home</a></li>
-            <li aria-current="page">Install</li>
-          </ol>
-        </nav>
         <h1 class="h1" id="install-title">Install ServersUp for Discord game server alerts</h1>
         <p class="lede">Get notified when your community's favorite game servers go up or down.</p>
         <p class="install-free">Free forever. No subscription.</p>
