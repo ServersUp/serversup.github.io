@@ -9,6 +9,8 @@
     [".site-header", "header"],
     [".site-footer", "footer"],
     [".status-cta", "home_bottom"],
+    [".cta", "home_bottom"],
+    [".hero", "hero"],
     [".status-seo-fallback", "seo_fallback"],
     [".article-cta", "article_end"],
     [".install-cta-after-faq", "after_faq"],
@@ -233,6 +235,20 @@
       track("cta_clicked", {
         location: location,
         label: label,
+      });
+    },
+    false
+  );
+
+  document.addEventListener(
+    "click",
+    function (event) {
+      var btn = event.target && event.target.closest ? event.target.closest(".faq-q") : null;
+      if (!btn || btn.getAttribute("aria-expanded") !== "true") return;
+
+      track("faq_opened", {
+        question: labelFrom(btn),
+        page_path: window.location.pathname,
       });
     },
     false
