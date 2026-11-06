@@ -66,14 +66,14 @@
           "publisher": {
             "@id": "https://serversup.app/#organization"
           },
-          "dateModified": "2026-11-05"
+          "dateModified": "2026-11-07"
         },
         {
           "@type": "SoftwareApplication",
           "@id": "https://serversup.app/#software",
           "name": "ServersUp",
-          "softwareVersion": "1.5.1",
-          "releaseNotes": "https://serversup.app/changelog/#v1-5-1"
+          "softwareVersion": "1.6",
+          "releaseNotes": "https://serversup.app/changelog/#v1-6"
         }
       ]
     }
@@ -121,13 +121,6 @@
         <section class="changelog-layout__col" aria-labelledby="upcoming-title">
           <h2 class="h2" id="upcoming-title">Upcoming changes</h2>
           <ul class="roadmap">
-            <li>
-              <span class="roadmap__icon roadmap__icon--game"><img src="/assets/game-wow-forever.png" alt="" width="48" height="48" loading="lazy" /></span>
-              <div>
-                <strong>World of Warcraft: Forever</strong>
-                <p>Live status and alerts for World of Warcraft: Forever servers.</p>
-              </div>
-            </li>
             <li>
               <span class="roadmap__icon roadmap__icon--game"><img src="/assets/game-wow-classic.png" alt="" width="48" height="48" loading="lazy" /></span>
               <div>
@@ -180,6 +173,16 @@
         <section class="changelog-layout__col changelog-layout__col--wide" aria-labelledby="changelog-title">
           <h2 class="h2" id="changelog-title">Changelog</h2>
           <div class="releases">
+            <article class="release" id="v1-6">
+              <h3><span class="release__v">v1.6</span> <time datetime="2026-11-07">November 7, 2026</time></h3>
+              <p>
+                World of Warcraft: Forever is supported. Forever has no realms, so ServersUp tracks each ruleset
+                (Normal, PvP, Roleplay and Roleplay PvP) in the US, EU, KR and TW regions. Check live status on the
+                <a href="/server-status/?game=forever">status page</a>, and subscribe with
+                <code>/subscribe</code> or the webhook form. Pick a region to be told once when every ruleset in it
+                is down and once when they all recover.
+              </p>
+            </article>
             <article class="release" id="v1-5-1">
               <h3><span class="release__v">v1.5.1</span> <time datetime="2026-11-04">November 4, 2026</time></h3>
               <p>

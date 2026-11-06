@@ -19,6 +19,14 @@ const GAMES = {
     regions: { na: "NA", eu: "EU", jp: "JP", oce: "OCE" },
     defaultRegion: "na",
   },
+  forever: {
+    label: "World of Warcraft: Forever",
+    short: "WoW Forever",
+    dataUrl: "../data/forever-servers.json",
+    regions: { us: "US", eu: "EU", kr: "KR", tw: "TW" },
+    defaultRegion: "us",
+    serverNoun: "Ruleset", // Forever has no realms; each "server" is a ruleset
+  },
 };
 
 function hardenExternalLinks() {
@@ -291,6 +299,8 @@ async function setupWebhookForm() {
     gameId = id;
     region = GAMES[id].defaultRegion;
     setGameTabActive(id);
+    const serverLabel = panel.querySelector('label[for="wh-server-search"]');
+    if (serverLabel) serverLabel.textContent = GAMES[id].serverNoun || "Server";
     setSelected("");
     try {
       const regions = await getRegions(id);

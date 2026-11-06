@@ -21,6 +21,12 @@ const GAME_META = {
     regionOrder: ["na", "eu", "jp", "oce"],
     regionLabels: { na: "NA", eu: "EU", jp: "JP", oce: "OCE" },
   },
+  forever: {
+    label: "World of Warcraft: Forever",
+    short: "WoW Forever",
+    regionOrder: ["us", "eu", "kr", "tw"],
+    regionLabels: { us: "US", eu: "EU", kr: "KR", tw: "TW" },
+  },
 };
 
 const PLACEHOLDER_TEXT = "Select a game and region to view servers.";

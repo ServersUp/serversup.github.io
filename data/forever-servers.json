@@ -1,0 +1,24 @@
+{
+  "regions": {
+    "us": [
+      "normal",
+      "pvp",
+      "roleplay",
+      "roleplay-pvp"
+    ],
+    "eu": [
+      "normal",
+      "pvp",
+      "roleplay",
+      "roleplay-pvp"
+    ],
+    "kr": [
+      "normal",
+      "pvp"
+    ],
+    "tw": [
+      "normal",
+      "pvp"
+    ]
+  }
+}
