@@ -26,7 +26,7 @@ const GAMES = {
     regions: { us: "US", eu: "EU", kr: "KR", tw: "TW" },
     defaultRegion: "us",
     serverNoun: "Ruleset", // Forever has no realms; each "server" is a ruleset
-    note: "Forever status comes from Blizzard's ruleset status, which can lag behind in-game outages by 15 minutes or more and may miss short ones. If the game is down but this shows Up, check again in a few minutes.",
+    note: "Forever status comes from Blizzard's ruleset status, which can lag behind in-game outages and may miss short ones while the game is in early launch.",
   },
 };
 
@@ -303,8 +303,9 @@ async function setupWebhookForm() {
     const serverLabel = panel.querySelector('label[for="wh-server-search"]');
     if (serverLabel) serverLabel.textContent = GAMES[id].serverNoun || "Server";
     const gameNote = panel.querySelector("[data-wh-game-note]");
-    if (gameNote) {
-      gameNote.textContent = GAMES[id].note || "";
+    const gameNoteText = panel.querySelector("[data-wh-game-note-text]");
+    if (gameNote && gameNoteText) {
+      gameNoteText.textContent = GAMES[id].note || "";
       gameNote.hidden = !GAMES[id].note;
     }
     setSelected("");
@@ -412,6 +413,7 @@ async function setupWebhookForm() {
         if (selectionKind === "region") {
           msg = "Done. Subscribed to ALL " + GAMES[gameId].regions[region] + " servers - you'll be notified once if every server is down, and once when they all recover.";
         }
+        if (GAMES[gameId].note) msg += " " + GAMES[gameId].note;
         setStatus(msg, "is-success");
         form.dataset.done = "true";
         window.ServersUpAnalytics?.track("webhook_subscribed", { game: gameId, region: region, server: selectedServer, scope: selectionKind === "region" ? "region" : "server" });
