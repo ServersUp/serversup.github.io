@@ -463,7 +463,10 @@ function setupStatusPage() {
   // Preselect a game and region (from ?game= and ?region=, else WoW and its first region)
   // so the board shows data right away and links can deep-link into it.
   const params = new URLSearchParams(window.location.search);
-  const wantGame = (params.get("game") || "").toLowerCase();
+  // "wow-forever" is the user-facing slug; "forever" (the internal game ID) keeps old links working.
+  const GAME_SLUGS = { "wow-forever": "forever" };
+  const rawGame = (params.get("game") || "").toLowerCase();
+  const wantGame = GAME_SLUGS[rawGame] || rawGame;
   const wantRegion = (params.get("region") || "").toLowerCase();
   if (wantRegion) lastRegionPref = wantRegion;
   selectGame(GAME_META[wantGame] ? wantGame : "wow", false);
