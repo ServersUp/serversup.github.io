@@ -345,6 +345,8 @@ function setupStatusPage() {
     gameId = id;
     region = null;
     setGameButtons();
+    const foreverNote = document.querySelector("[data-forever-note]");
+    if (foreverNote) foreverNote.hidden = id !== "forever";
     setSub(`Choose a ${GAME_META[id].short} region.`);
     errorEl.hidden = true;
     renderIdle();
