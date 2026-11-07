@@ -27,6 +27,9 @@
   --up: #5fd38d;
   --down: #ff6b5e;
   --unknown: #e8c35a;
+  --warn-bg: #2b2208;
+  --warn-line: #d4a017;
+  --warn-text: #f6dc8c;
   --down-bg: #241315;
   --down-line: #5a2a2e;
   --code: #0a0c11;
@@ -50,6 +53,9 @@
   --up: #17703f;
   --down: #c42b1c;
   --unknown: #8a6100;
+  --warn-bg: #fff6d6;
+  --warn-line: #d49a00;
+  --warn-text: #5a4200;
   --down-bg: #fef3f2;
   --down-line: #f4c4be;
   --code: #14171f;
@@ -2061,6 +2067,29 @@ html:not(.js) .status-pick,
 html:not(.js) .status-panel,
 html:not(.js) .status-step {
   display: none;
+}
+
+.warn-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin: 0.75rem 0 0;
+  padding: 0.7rem 0.9rem;
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-line);
+  border-left-width: 4px;
+  border-radius: 8px;
+  color: var(--warn-text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.warn-callout[hidden] {
+  display: none;
+}
+
+.warn-callout__icon {
+  flex: none;
 }
 
 .status-note {
