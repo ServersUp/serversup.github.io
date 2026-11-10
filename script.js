@@ -413,7 +413,6 @@ async function setupWebhookForm() {
         if (selectionKind === "region") {
           msg = "Done. Subscribed to ALL " + GAMES[gameId].regions[region] + " servers - you'll be notified once if every server is down, and once when they all recover.";
         }
-        if (GAMES[gameId].note) msg += " " + GAMES[gameId].note;
         setStatus(msg, "is-success");
         form.dataset.done = "true";
         window.ServersUpAnalytics?.track("webhook_subscribed", { game: gameId, region: region, server: selectedServer, scope: selectionKind === "region" ? "region" : "server" });
